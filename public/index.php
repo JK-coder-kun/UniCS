@@ -1,11 +1,16 @@
 <?php
+
+use Ninja\DatabaseTable;
+
 try {
-	include '/../includes/autoload.php';
+	include '/opt/lampp/htdocs/UniCS/'.'./includes/autoload.php';
 	//include './../classes/Ninja/EntryPoint.php';
-	$route = $_GET['route'] ?? '';
+	
+	$route = $_SERVER['REQUEST_URI'];
+	$route= substr($route,14);
+	echo $route."</br>".$_SERVER['REQUEST_METHOD']."</br>";
 
-
-	$entryPoint = new EntryPoint($route, $_SERVER['REQUEST_METHOD'], new \Unics\Routes());
+	$entryPoint = new \Ninja\EntryPoint($route, $_SERVER['REQUEST_METHOD'], new \Unics\Routes());
 	$entryPoint->run();
 }
 catch (PDOException $e) {

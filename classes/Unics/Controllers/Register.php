@@ -9,7 +9,8 @@ class Register {
 		$this->userTable = $userTable;
 	}
 
-	public function registrationForm() {
+	public function registerationForm() {
+		echo "registerationForm";
 		return ['template' => 'register.html.php', 
 				'title' => 'Register an account'];
 	}
@@ -22,11 +23,10 @@ class Register {
 
 	public function registerUser() {
 		$user = $_POST['user'];
-
 		//Assume the data is valid to begin with
 		$valid = true;
 		$errors = [];
-
+		
 		//But if any of the fields have been left blank, set $valid to false
 		if (empty($user['name'])) {
 			$valid = false;
@@ -51,13 +51,12 @@ class Register {
 				$errors[] = 'That email address is already registered';
 			}
 		}
-
+		
 
 		if (empty($user['password'])) {
 			$valid = false;
 			$errors[] = 'Password cannot be blank';
 		}
-
 		//If $valid is still true, no fields were blank and the data can be added
 		if ($valid == true) {
 			//Hash the password before saving it in the database
@@ -65,9 +64,10 @@ class Register {
 
 			//When submitted, the $user variable now contains a lowercase value for email
 			//and a hashed password
+			
 			$this->userTable->save($user);
-
-			header('Location: index.php?route=`/register/success`');
+			
+			header('Location: register/success');
 		}
 		else {
 			//If the data is not valid, show the form again

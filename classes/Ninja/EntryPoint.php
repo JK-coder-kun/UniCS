@@ -1,5 +1,5 @@
 <?php
-//namespace Ninja;
+namespace Ninja;
 
 class EntryPoint {
 	private $route;
@@ -7,7 +7,7 @@ class EntryPoint {
 	private $routes;
 	public function __construct(string $route, string $method, \Unics\Routes $routes) {
 		$this->route = $route;
-		//$this->routes = $routes;
+		$this->routes = $routes;
 		$this->method = $method;
         echo "entry point loaded";
 		//$this->checkUrl();
@@ -24,7 +24,7 @@ class EntryPoint {
 		extract($variables);
 
 		ob_start();
-		include  '/../templates/' . $templateFileName;
+		include  '/opt/lampp/htdocs/UniCS/'.'./templates/' . $templateFileName;
 
 		return ob_get_clean();
 	}
@@ -35,8 +35,8 @@ class EntryPoint {
 
 		$authentication = $this->routes->getAuthentication();
 
-		if (!$authentication->isLoggedIn()) {
-			header('location: index.php?route=`login/error`');
+		if (isset($routes[$this->route]['login']) && !$authentication->isLoggedIn()) {
+			header('location: ../templates/login.html.php');
 		}
 		else if (isset($routes[$this->route]['permissions']) && !$this->routes->checkPermission($routes[$this->route]['permissions'])) {
 			header('location: index.php?route=`login/permissionserror`');	

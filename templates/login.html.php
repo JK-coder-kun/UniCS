@@ -1,7 +1,7 @@
 <?php if (isset($error)):?>
 	<div class="errors"><?=$error;?></div>
 <?php endif; ?>
-<form method="post" action="../public/index.php?route=`login`">
+<form method="post" action="login">
 	<label for="email">Your email address</label>
 	<input type="text" id="email" name="email">
 
@@ -10,3 +10,5 @@
 
 	<input type="submit" name="login" value="Log in">
 </form>
+</br>
+<p>If you don't have account , </p><a href="register">Register here</a>

@@ -2,7 +2,7 @@
 function autoloader($className) {
 	$fileName = str_replace('\\', '/', $className) . '.php';
 
-	$file ='/../classes/' . $fileName;
+	$file ='/opt/lampp/htdocs/UniCS/'.'./classes/' . $fileName;
 	
 	include $file;
 }

@@ -6,7 +6,7 @@ class Routes{
     private $userTable;
 
     public function __construct(){
-        include '/../includes/DatabaseConnection.php';
+        include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
         $this->scheduleTable=new \Ninja\DatabaseTable($pdo,'schedule','period' );
         $this->userTable=new \Ninja\DatabaseTable($pdo,'user','id');
         $this->authentication=new \Ninja\Authentication($this->userTable,'email','password');
@@ -54,7 +54,7 @@ class Routes{
             'register'=>[
                 'GET'=>[
                     'controller'=>$registerController,
-                    'action'=>'registerForm'
+                    'action'=>'registerationForm'
                 ],
                 'POST'=>[
                     'controller'=>$registerController,
@@ -83,6 +83,7 @@ class Routes{
                     'controller'=>$registerController,
                     'action'=>'savePermissions'
                 ],
+                'login'=>true,
                 'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
             ]
         ];

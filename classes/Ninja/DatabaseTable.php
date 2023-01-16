@@ -18,6 +18,7 @@ class DatabaseTable {
 
 	private function query($sql, $parameters = []) {
 		$query = $this->pdo->prepare($sql);
+		//	echo "</br>".$sql;
 		$query->execute($parameters);
 		return $query;
 	}	
@@ -48,6 +49,30 @@ class DatabaseTable {
 		return $query->fetchObject($this->className, $this->constructorArgs);
 	}
 
+	public function findByTwoColumn($column1,$value1,$column2,$value2,$orderBy = null, $limit = null, $offset = null){
+		$query=	'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND '. 
+				$column2. ' = :value2';
+		
+		$parameters = [
+			'value1'=> $value1,
+			'value2'=> $value2
+		];
+
+		if ($orderBy != null) {
+			$query .= ' ORDER BY ' . $orderBy;
+		}
+
+		if ($limit != null) {
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if ($offset != null) {
+			$query .= ' OFFSET ' . $offset;
+		}
+		$query = $this->query($query, $parameters);
+
+		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
+	}
 	public function find($column, $value, $orderBy = null, $limit = null, $offset = null) {
 		$query = 'SELECT * FROM ' . $this->table . ' WHERE ' . $column . ' = :value';
 

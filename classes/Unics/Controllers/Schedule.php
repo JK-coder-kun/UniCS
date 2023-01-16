@@ -10,15 +10,22 @@ class Schedule{
     }
 
     public function showSchedule(){
-        $schedules=$this->scheduleTable->findAll();
-        echo "showSchedule function";
-        echo $schedules[0]->day;
+        $day=$_GET['day'] ??  date('l');
+        $day=strtolower($day);
+        for($period=1;$period<=6;$period++){
+            $schedules[$period]=$this->scheduleTable->findByTwoColumn('day',$day,'period',$period);
+        }
+        //$schedules=$this->scheduleTable->findAll();
         $title='Schedule';
+
 
         return [
             'template'=>'showschedule.html.php',
             'title'=>$title,
-            'variables'=>['schedules'=>$schedules]
+            'variables'=>[
+                'schedules'=>$schedules,
+                'day'=>$day
+                ]
         ];
     }
 }

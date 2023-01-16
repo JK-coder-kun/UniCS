@@ -44,7 +44,7 @@ class EntryPoint {
 		else {
 			$controller = $routes[$this->route][$this->method]['controller'];
 			$action = $routes[$this->route][$this->method]['action'];
-			echo "before call controller";
+			echo "before call controller</br>";
 			$page = $controller->$action();
 
 			$title = $page['title'];

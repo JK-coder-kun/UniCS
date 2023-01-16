@@ -11,12 +11,12 @@
 			<h1>University Classrooms Scheduler</h1>
 		</header>
 		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/joke/edit">Timetable</a></li>
+			<li><a href="home">Home</a></li>
+			<li><a href="../schedule">Schedule</a></li>
             <?php if ($loggedIn): ?>
-			<li><a href="/logout">Log out</a></li>
+			<li><a href="../logout">Log out</a></li>
 			<?php else: ?>
-			<li><a href="../login">Log in</a></li>
+			<li><a href="login">Log in</a></li>
 			<?php endif; ?>
 		</ul>
 	</nav>

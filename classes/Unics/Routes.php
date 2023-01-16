@@ -8,14 +8,15 @@ class Routes{
     public function __construct(){
         include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
         $this->scheduleTable=new \Ninja\DatabaseTable($pdo,'schedule','period' );
-        $this->userTable=new \Ninja\DatabaseTable($pdo,'user','id');
-        $this->authentication=new \Ninja\Authentication($this->userTable,'email','password');
+        $this->userTable=new \Ninja\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
+        $this->authentication=new \Ninja\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
     
     public function getRoutes(){
         $loginController= new \Unics\Controllers\Login($this->authentication);
         $registerController=new \Unics\Controllers\Register($this->userTable);
+        $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable);
         $routes=[
             ''=>[
                 'GET'=>[
@@ -51,6 +52,12 @@ class Routes{
                     'action'=>'permissionsError'
                 ]
                 ],
+            'logout'=>[
+                'GET'=>[
+                    'controller'=>$loginController,
+                    'action'=>'logout'
+                ]
+            ],
             'register'=>[
                 'GET'=>[
                     'controller'=>$registerController,
@@ -85,6 +92,13 @@ class Routes{
                 ],
                 'login'=>true,
                 'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
+            ],
+            'schedule'=>[
+                'GET'=>[
+                    'controller'=>$scheduleController,
+                    'action'=>'showSchedule'
+                ],
+                'login'=>true
             ]
         ];
         return $routes;

@@ -9,7 +9,7 @@ class EntryPoint {
 		$this->route = $route;
 		$this->routes = $routes;
 		$this->method = $method;
-        echo "entry point loaded";
+        echo "entry point loaded</br>";
 		//$this->checkUrl();
 	}
 
@@ -36,7 +36,7 @@ class EntryPoint {
 		$authentication = $this->routes->getAuthentication();
 
 		if (isset($routes[$this->route]['login']) && !$authentication->isLoggedIn()) {
-			header('location: ../templates/login.html.php');
+			header('location: ');
 		}
 		else if (isset($routes[$this->route]['permissions']) && !$this->routes->checkPermission($routes[$this->route]['permissions'])) {
 			header('location: index.php?route=`login/permissionserror`');	
@@ -44,6 +44,7 @@ class EntryPoint {
 		else {
 			$controller = $routes[$this->route][$this->method]['controller'];
 			$action = $routes[$this->route][$this->method]['action'];
+			echo "before call controller";
 			$page = $controller->$action();
 
 			$title = $page['title'];

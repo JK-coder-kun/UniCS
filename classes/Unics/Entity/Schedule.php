@@ -8,4 +8,7 @@ class Schedule{
     public $section;
     public $subjectCode;
     
+    public function showSubject(){
+        return $this->subjectCode;
+    }
 }

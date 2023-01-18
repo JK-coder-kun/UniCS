@@ -1,6 +1,6 @@
 <?php
     print_r($schedules[2]);
-    echo "In ".$day." :</br>";
+    echo "</br>In ".$day." :</br>";
     for($period=1;$period<=6;$period++){
         echo "period ".$period." : ";
         if($schedules[$period]){
@@ -9,6 +9,11 @@
         }else echo " ";
         echo "</br>";
     }
+    date_default_timezone_set('Asia/Yangon');
+    $now=date('h:s');
+    echo $now;
+    
+
     ?>
     <ul>
         <?php for($i=0;$i<5;$i++): ?>
@@ -16,3 +21,4 @@
         <?php endfor; ?>
         
     </ul>
+    <?php header('refresh:3600');

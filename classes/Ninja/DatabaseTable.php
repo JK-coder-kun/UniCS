@@ -1,6 +1,8 @@
 <?php
 namespace Ninja;
 
+use Exception;
+
 class DatabaseTable {
 	private $pdo;
 	private $table;
@@ -17,10 +19,14 @@ class DatabaseTable {
 	}
 
 	private function query($sql, $parameters = []) {
-		$query = $this->pdo->prepare($sql);
-		//	echo "</br>".$sql;
+		try{
+			$query = $this->pdo->prepare($sql);
+		echo "</br>".$sql;
 		$query->execute($parameters);
 		return $query;
+		}catch(Exception $e){
+			echo $e;
+		}
 	}	
 
 	public function total($field = null, $value = null) {
@@ -47,6 +53,31 @@ class DatabaseTable {
 		$query = $this->query($query, $parameters);
 
 		return $query->fetchObject($this->className, $this->constructorArgs);
+	}
+
+	public function findByThreeColumn($column1,$value1,$column2,$value2,$column3,$value3,$orderBy=null,$limit=null,$offset=null){
+		$query= 'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND '. 
+		$column2. ' = :value2 AND '.$column3.' = :value3';
+		$parameters = [
+			'value1'=> $value1,
+			'value2'=> $value2,
+			'value3'=> $value3
+		];
+
+		if ($orderBy != null) {
+			$query .= ' ORDER BY ' . $orderBy;
+		}
+
+		if ($limit != null) {
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if ($offset != null) {
+			$query .= ' OFFSET ' . $offset;
+		}
+		$query = $this->query($query, $parameters);
+
+		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
 	public function findByTwoColumn($column1,$value1,$column2,$value2,$orderBy = null, $limit = null, $offset = null){
@@ -159,6 +190,14 @@ class DatabaseTable {
 		];
 
 		$query = $this->query($query, $parameters);
+	}
+
+	public function findRoomSchedule($roomNo,$tableName){
+		$parameters=['roomNo'=>$roomNo];
+
+		$query='SELECT `period`,`day` FROM '.$tableName.' WHERE `roomNo`=:roomNo';
+		$result=$this->query($query,$parameters);
+		return $result->fetchAll();
 	}
 
 	public function findAll($orderBy = null, $limit = null, $offset = null) {

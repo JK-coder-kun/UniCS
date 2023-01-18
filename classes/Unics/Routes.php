@@ -4,11 +4,15 @@ class Routes{
     private $scheduleTable;
     private $authentication;
     private $userTable;
+    private $approvalTable;
+    private $requestTable;
 
     public function __construct(){
         include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
-        $this->scheduleTable=new \Ninja\DatabaseTable($pdo,'schedule','period' );
+        $this->scheduleTable=new \Ninja\DatabaseTable($pdo,'schedule','period' ,'\Unics\Entity\Schedule');
         $this->userTable=new \Ninja\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
+        $this->approvalTable=new \Ninja\DatabaseTable($pdo,'approval','period');
+        $this->requestTable=new \Ninja\DatabaseTable($pdo,'request','period');
         $this->authentication=new \Ninja\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
@@ -16,7 +20,8 @@ class Routes{
     public function getRoutes(){
         $loginController= new \Unics\Controllers\Login($this->authentication);
         $registerController=new \Unics\Controllers\Register($this->userTable);
-        $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable);
+        $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
+        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable);
         $routes=[
             ''=>[
                 'GET'=>[
@@ -97,6 +102,17 @@ class Routes{
                 'GET'=>[
                     'controller'=>$scheduleController,
                     'action'=>'showSchedule'
+                ],
+                'login'=>true
+            ],
+            'request'=>[
+                'GET'=>[
+                    'controller'=>$requestController,
+                    'action'=>'showRoomSchedule'
+                ],
+                'POST'=>[
+                    'controller'=>$registerController,
+                    'action'=>'sendRequest'
                 ],
                 'login'=>true
             ]

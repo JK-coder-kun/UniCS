@@ -12,9 +12,9 @@
 		</header>
 		<ul>
 			<li><a href="home">Home</a></li>
-			<li><a href="../schedule">Schedule</a></li>
+			<li><a href="/UniCS/public/schedule">Schedule</a></li>
             <?php if ($loggedIn): ?>
-			<li><a href="../logout">Log out</a></li>
+			<li><a href="logout">Log out</a></li>
 			<?php else: ?>
 			<li><a href="login">Log in</a></li>
 			<?php endif; ?>

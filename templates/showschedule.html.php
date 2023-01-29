@@ -1,14 +1,14 @@
 <?php
-    print_r($schedules[2]);
+    print_r($rooms);
     echo "</br>In ".$day." :</br>";
-    for($period=1;$period<=6;$period++){
-        echo "period ".$period." : ";
-        if($schedules[$period]){
-            echo "RoomNumber (".$schedules[$period][0]->roomNo.") ";
-            echo "SubjectCode (".$schedules[$period][0]->subjectCode.") ";
-        }else echo " ";
-        echo "</br>";
-    }
+    // for($period=1;$period<=6;$period++){
+    //     echo "period ".$period." : ";
+    //     if($schedules[$period]){
+    //         echo "RoomNumber (".$schedules[$period][0]->roomNo.") ";
+    //         echo "SubjectCode (".$schedules[$period][0]->subjectCode.") ";
+    //     }else echo " ";
+    //     echo "</br>";
+    // }
     date_default_timezone_set('Asia/Yangon');
     $now=date('h:s');
     echo $now;

@@ -21,7 +21,7 @@ class Routes{
         $loginController= new \Unics\Controllers\Login($this->authentication);
         $registerController=new \Unics\Controllers\Register($this->userTable);
         $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
-        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable);
+        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication);
         $routes=[
             ''=>[
                 'GET'=>[
@@ -51,7 +51,7 @@ class Routes{
                     'action'=>'error'
                 ]
                 ],
-            'login/permissionerror'=>[
+            'login/permissionserror'=>[
                 'GET'=>[
                     'controller'=>$loginController,
                     'action'=>'permissionsError'
@@ -111,10 +111,11 @@ class Routes{
                     'action'=>'showRoomSchedule'
                 ],
                 'POST'=>[
-                    'controller'=>$registerController,
+                    'controller'=>$requestController,
                     'action'=>'sendRequest'
                 ],
-                'login'=>true
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::REQUEST_ROOM
             ]
         ];
         return $routes;

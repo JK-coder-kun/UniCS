@@ -21,11 +21,11 @@ class DatabaseTable {
 	private function query($sql, $parameters = []) {
 		try{
 			$query = $this->pdo->prepare($sql);
-		echo "</br>".$sql;
-		$query->execute($parameters);
-		return $query;
+			//echo $sql."</br>";print_r($parameters);
+			$query->execute($parameters);
+			return $query;
 		}catch(Exception $e){
-			echo $e;
+			echo "</br>".$e->getMessage()."</br>In ".$e->getFile()."</br>";
 		}
 	}	
 
@@ -192,10 +192,10 @@ class DatabaseTable {
 		$query = $this->query($query, $parameters);
 	}
 
-	public function findRoomSchedule($roomNo,$tableName){
-		$parameters=['roomNo'=>$roomNo];
+	public function findRoomSchedule($roomNo,$day,$tableName){
+		$parameters=['roomNo'=>$roomNo,'day'=>$day];
 
-		$query='SELECT `period`,`day` FROM '.$tableName.' WHERE `roomNo`=:roomNo';
+		$query='SELECT `period` FROM '.$tableName.' WHERE `roomNo`=:roomNo AND `day`=:day';
 		$result=$this->query($query,$parameters);
 		return $result->fetchAll();
 	}
@@ -218,6 +218,30 @@ class DatabaseTable {
 		$result = $this->query($query);
 
 		return $result->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
+	}
+
+	public function findOccupiedRooms($day,$period,$orderBy=null,$limit=null,$offset=null){
+		$query=	'SELECT roomNo FROM ' . $this->table . ' WHERE day = :day AND period = :period';
+		
+		$parameters = [
+			'day'=> $day,
+			'period'=> $period
+		];
+
+		if ($orderBy != null) {
+			$query .= ' ORDER BY ' . $orderBy;
+		}
+
+		if ($limit != null) {
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if ($offset != null) {
+			$query .= ' OFFSET ' . $offset;
+		}
+		$query = $this->query($query, $parameters);
+		$result=$query->fetchAll(\PDO::FETCH_ASSOC);
+		return $result;
 	}
 
 	private function processDates($fields) {

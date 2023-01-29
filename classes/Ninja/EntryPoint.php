@@ -9,16 +9,15 @@ class EntryPoint {
 		$this->route = $route;
 		$this->routes = $routes;
 		$this->method = $method;
-        echo "entry point loaded</br>";
-		//$this->checkUrl();
+		$this->checkUrl();
 	}
 
-	// private function checkUrl() {
-	// 	if ($this->route !== strtolower($this->route)) {
-	// 		http_response_code(301);
-	// 		header('location: ' . strtolower($this->route));
-	// 	}
-	// }
+	private function checkUrl() {
+		if ($this->route !== strtolower($this->route)) {
+			http_response_code(301);
+			header('location: ' . strtolower($this->route));
+		}
+	}
 
 	private function loadTemplate($templateFileName, $variables = []) {
 		extract($variables);
@@ -39,7 +38,7 @@ class EntryPoint {
 			header('location: login/error');
 		}
 		else if (isset($routes[$this->route]['permissions']) && !$this->routes->checkPermission($routes[$this->route]['permissions'])) {
-			header('location: index.php?route=`login/permissionserror`');	
+			header('location: login/permissionserror');	
 		}
 		else {
 			$controller = $routes[$this->route][$this->method]['controller'];
@@ -56,10 +55,18 @@ class EntryPoint {
 				$output = $this->loadTemplate($page['template']);
 			}
 
-			echo $this->loadTemplate('layout.html.php', ['loggedIn' => $authentication->isLoggedIn(),
+			if($page['template']=='login.html.php'){
+				echo $this->loadTemplate('loginlayout.html.php',[
+																	'output'=>$output,
+																	'title'=>$title		
+				]);
+			}else{
+				echo $this->loadTemplate('layout.html.php', ['loggedIn' => $authentication->isLoggedIn(),
 			                                             'output' => $output,
 			                                             'title' => $title
 			                                            ]);
+			}
+			
 
 		}
 

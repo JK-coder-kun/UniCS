@@ -1,12 +1,14 @@
 <?php
 namespace Unics\Controllers;
-use \Ninja\DatabaseTable;
-use \Ninja\Authentication;
+use \Common\DatabaseTable;
+use \Common\Authentication;
 class Request{
     private $scheduleTable;
     private $requestTable;
     private $approvalTable;
     private $authentication;
+    private $requestOperator;
+    private $request;
 
     public function __construct(DatabaseTable $scheduleTable,DatabaseTable $requestTable,DatabaseTable $approvalTable,Authentication $authentication)
     {
@@ -50,21 +52,34 @@ class Request{
     }
     public function sendRequest(){
         $requestForm=$_POST['request'];
-        echo "</br>";print_r($requestForm);echo "</br>"; 
-        $schedule=$this->approvalTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
-        $schedule=$this->scheduleTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
-        if(empty($schedule)){
-            if(isset($requestForm['reason'])){
-                $approval=$this->requestTable->save(['period'=>$requestForm['period'],
+        $requestForm['userId']=$this->authentication->getUser()->id;
+        $this->request=new \Unics\Entity\Request($requestForm);
+        $requestOperator=new \Unics\Controllers\RequestOperator($this->request,
+                                                                        $this->scheduleTable,
+                                                                        $this->approvalTable,
+                                                                        $this->requestTable);
+        $requestOperator->checkRequestedDay();
+
+        // $schedules=$this->approvalTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
+        // $approvals=$this->scheduleTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
+        if($requestOperator->checkFree()){
+            if($requestOperator->checkRequestedDay()){
+                if(isset($requestForm['reason'])){
+                    echo "enter to reason</br>";
+                    $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
+                            'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
+                            'reason'=>$requestForm['reason'],'userId'=>$this->authentication->getUser()->id]);
+                }else{
+                    $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
                         'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
-                        'reason'=>$requestForm['reason'],'userID'=>$this->authentication->getUser()->id]);
-            }else{
-                $approval=$this->requestTable->save(['period'=>$requestForm['period'],
-                    'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
-                    'section'=>$requestForm['section'],
-                    'subjectCode'=>$requestForm['subjectCode']]);
-            }  
-            header('Location: schedule');      
+                        'section'=>$requestForm['section'],
+                        'subjectCode'=>$requestForm['subjectCode'],'userId'=>$this->authentication->getUser()->id]);
+                }  
+                
+                header('Location: schedule');   
+            }
+
+               
         }else{
             $roomNo=$requestForm['roomNo'];
             $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays

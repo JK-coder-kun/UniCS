@@ -9,11 +9,11 @@ class Routes{
 
     public function __construct(){
         include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
-        $this->scheduleTable=new \Ninja\DatabaseTable($pdo,'schedule','period' ,'\Unics\Entity\Schedule');
-        $this->userTable=new \Ninja\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
-        $this->approvalTable=new \Ninja\DatabaseTable($pdo,'approval','period');
-        $this->requestTable=new \Ninja\DatabaseTable($pdo,'request','period');
-        $this->authentication=new \Ninja\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
+        $this->scheduleTable=new \Common\DatabaseTable($pdo,'schedule','period' ,'\Unics\Entity\Schedule');
+        $this->userTable=new \Common\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
+        $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','period');
+        $this->requestTable=new \Common\DatabaseTable($pdo,'request','id','\Unics\Entity\Request');
+        $this->authentication=new \Common\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
     
@@ -121,7 +121,7 @@ class Routes{
         return $routes;
     }
 
-    public function getAuthentication(): \Ninja\Authentication {
+    public function getAuthentication(): \Common\Authentication {
 		return $this->authentication;
 	}
 

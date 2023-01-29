@@ -1,6 +1,6 @@
 <?php
 namespace Unics\Controllers;
-use Ninja\DatabaseTable;
+use Common\DatabaseTable;
 class Schedule{
     private $scheduleTable;
     private $approvalTable;

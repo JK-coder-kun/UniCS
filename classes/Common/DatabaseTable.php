@@ -1,5 +1,5 @@
 <?php
-namespace Ninja;
+namespace Common;
 
 use Exception;
 
@@ -258,7 +258,7 @@ class DatabaseTable {
 	public function save($record) {
 		$entity = new $this->className(...$this->constructorArgs);
 		
-		try {
+		try {	
 			if ($record[$this->primaryKey] == '') {
 				$record[$this->primaryKey] = null;
 			}

@@ -1,5 +1,5 @@
 <?php
-namespace Ninja;
+namespace Common;
 
 class Authentication {
 	private $users;

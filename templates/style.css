@@ -1,0 +1,35 @@
+.bg-future {
+    background-color: #9397EA;
+}
+
+#navbar-brand {
+    font-size: 25px;
+}
+
+#navbar-ul {
+    font-size: 50px;
+}
+
+#homepageContainer {
+    margin-top: 2.5%;
+}
+
+.nav-item>.nav-link {
+    font-size: 20px;
+}
+
+.room-taken {
+    background: #739238;
+}
+
+.room {
+    width: 100px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0px;
+    margin: 15px;
+}
+
+.room-free {
+    background: #F1AE64;
+}

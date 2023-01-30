@@ -1,2 +1,2 @@
-# Unics
+# UniCS
 Project Repo

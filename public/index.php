@@ -8,7 +8,6 @@ try {
 	
 	$route =strtok($_SERVER['REQUEST_URI'], '?');
 	$route= substr($route,14);
-	echo $route."</br>".$_SERVER['REQUEST_METHOD']."</br>";
 
 	$entryPoint = new \Common\EntryPoint($route, $_SERVER['REQUEST_METHOD'], new \Unics\Routes());
 	$entryPoint->run();

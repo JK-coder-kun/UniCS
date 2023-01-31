@@ -18,6 +18,10 @@ class DatabaseTable {
 		$this->constructorArgs = $constructorArgs;
 	}
 
+	public function getDatabase(){
+		return $this->pdo;
+	}
+
 	private function query($sql, $parameters = []) {
 		try{
 			$query = $this->pdo->prepare($sql);

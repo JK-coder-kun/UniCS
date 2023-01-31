@@ -8,14 +8,20 @@ class Request{
     private $approvalTable;
     private $authentication;
     private $requestOperator;
+    private $notificationTable;
     private $request;
 
-    public function __construct(DatabaseTable $scheduleTable,DatabaseTable $requestTable,DatabaseTable $approvalTable,Authentication $authentication)
+    public function __construct(DatabaseTable $scheduleTable,
+                                DatabaseTable $requestTable,
+                                DatabaseTable $approvalTable,
+                                Authentication $authentication,
+                                DatabaseTable $notificationTable)
     {
         $this->scheduleTable=$scheduleTable;
         $this->requestTable=$requestTable;
         $this->approvalTable=$approvalTable;
         $this->authentication=$authentication;
+        $this->notificationTable=$notificationTable;
     }
 
     public function showRoomSchedule(){
@@ -54,11 +60,11 @@ class Request{
         $requestForm=$_POST['request'];
         $requestForm['userId']=$this->authentication->getUser()->id;
         $this->request=new \Unics\Entity\Request($requestForm);
-        $requestOperator=new \Unics\Controllers\RequestOperator($this->request,
-                                                                        $this->scheduleTable,
-                                                                        $this->approvalTable,
-                                                                        $this->requestTable);
-        $requestOperator->checkRequestedDay();
+        $requestOperator=new \Unics\Controllers\RequestOperator($this->scheduleTable,
+                                                                $this->approvalTable,
+                                                                $this->requestTable,
+                                                                $this->notificationTable,
+                                                                $this->request);
 
         // $schedules=$this->approvalTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
         // $approvals=$this->scheduleTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);

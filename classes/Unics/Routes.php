@@ -6,13 +6,15 @@ class Routes{
     private $userTable;
     private $approvalTable;
     private $requestTable;
+    private $notificationTable;
 
     public function __construct(){
         include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
         $this->scheduleTable=new \Common\DatabaseTable($pdo,'schedule','period' ,'\Unics\Entity\Schedule');
         $this->userTable=new \Common\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
-        $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','period');
+        $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','id');
         $this->requestTable=new \Common\DatabaseTable($pdo,'request','id','\Unics\Entity\Request');
+        $this->notificationTable=new \Common\DatabaseTable($pdo,'notification','userId');
         $this->authentication=new \Common\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
@@ -21,7 +23,7 @@ class Routes{
         $loginController= new \Unics\Controllers\Login($this->authentication);
         $registerController=new \Unics\Controllers\Register($this->userTable);
         $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
-        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication);
+        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication,$this->notificationTable);
         $routes=[
             ''=>[
                 'GET'=>[

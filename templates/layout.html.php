@@ -48,7 +48,8 @@
 <link rel="stylesheet" href="../style.css">
 
 
-<footer>
+<!-- <footer style='position:fixed;bottom:0;width:100%;'> -->
+    <footer>
     <div class="card text-center">
         <!-- you should remove 'fixed-bottom' if you implement this into a page -->
         <div class="card-footer text-muted">

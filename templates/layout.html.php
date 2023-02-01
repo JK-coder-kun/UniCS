@@ -6,6 +6,30 @@
 		<link rel="stylesheet" href="/UniCS/templates/bootstrap.css">
 		<link rel="stylesheet" href="/UniCS/templates/style.css">
 		<title><?=$title?></title>
+        <style>
+            #notibell .dropdown-check:checked ~ .dropdown {
+                visibility: visible;
+                opacity: 1;
+            }
+            #notibell > .dropdown{
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 1rem;
+                visibility: hidden;
+                opacity: 0;
+                width: 250px;
+                transition: 0.3s;
+            }
+            .dropdown li {
+                font-size: 9px;
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 1rem;
+            }
+        </style>
 	</head>
 	<body>
 		
@@ -14,6 +38,25 @@
 <!-- the template -->
 <nav class="navbar bg-future navbar-dark navbar-expand-md sticky-top">
     <div class="container-fluid">
+         <!-- notification Bell -->
+         <li id="notibell">
+                    <label for="check">
+                        <i class="bi bi-bell"></i>
+                        <span style="color:red;font-size:medium" class="count"><?php echo sizeof($notifications); ?></span>
+                    </label>
+                    <input type="checkbox" class="dropdown-check" id="check" />
+                    <ul class="dropdown">
+                        <?php
+                        if (sizeof($notifications) > 0) {
+                            foreach ($notifications as $item) {
+                        ?>
+                            <li style="font-size: small;"><?=$item->notiText; ?></br>
+                                send at :<?=$item->time?>
+                            </li>
+                        <?php }
+                        } ?>
+                    </ul>
+                </li>
         <a href="#" class="navbar-brand" id="navbar-brand">uniCS</a>
         <div class="navbar-collapse collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav" id="navbar-ul">
@@ -26,6 +69,7 @@
                 <li class="nav-item">
                     <a href="#profile" class="nav-link">Profile</a>
                 </li>
+
                 <li class="nav-item">
 					<?php if ($loggedIn): ?>
                    	 	<a href="/UniCS/public/logout" class="nav-link">Logout</a>

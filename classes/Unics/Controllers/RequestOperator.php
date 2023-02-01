@@ -89,12 +89,12 @@ class RequestOperator{
     public function sendApproval(){
         $notiText="Your request has been approved!\nRoom No:".$this->request->roomNo
                 ."\nTime :".$this->request->day.", ".$this->request->period;
-        $notiInfo=['userId'=>$this->request->userId,'status'=>1,'date'=>new DateTime(),
+        $notiInfo=['userId'=>$this->request->userId,'status'=>1,'time'=>new DateTime(),
                     'notiText'=>$notiText];
         $this->notificationTable->save($notiInfo);
     }
 
-    public function comparePriority($requests){
+    public function compareRequests($requests){
         $priorityObjs=$this->priorityTable->findAll('priority');
         foreach($priorityObjs as $priorityObj){
             $priority[$priorityObj->reason]=$priorityObj->priority;

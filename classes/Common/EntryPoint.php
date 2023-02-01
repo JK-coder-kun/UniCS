@@ -60,9 +60,11 @@ class EntryPoint {
 																	'title'=>$title		
 				]);
 			}else{
+				$notifications=$this->routes->getNotification();
 				echo $this->loadTemplate('layout.html.php', ['loggedIn' => $authentication->isLoggedIn(),
 			                                             'output' => $output,
-			                                             'title' => $title
+			                                             'title' => $title,
+														 'notifications'=>$notifications
 			                                            ]);
 			}
 			

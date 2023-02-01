@@ -127,6 +127,12 @@ class Routes{
 		return $this->authentication;
 	}
 
+    public function getNotification(){
+        $userId=$this->authentication->getUser()->id;
+        $notifications=$this->notificationTable->find('userId',$userId);
+        return $notifications;
+    }
+
     public function checkPermission($permission): bool {
 		$user = $this->authentication->getUser();
 

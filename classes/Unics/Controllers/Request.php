@@ -2,6 +2,8 @@
 namespace Unics\Controllers;
 use \Common\DatabaseTable;
 use \Common\Authentication;
+use DateTime;
+
 class Request{
     private $scheduleTable;
     private $requestTable;
@@ -28,15 +30,15 @@ class Request{
         if(isset($_GET['roomNo'])){
             $roomNo=$_GET['roomNo'];
             $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
-            $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
-            $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
-            $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
-            $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
-            $roomSchedules['monday']=$this->approvalTable->findRoomSchedule($roomNo,'monday','schedule');
-            $roomSchedules['tuesday']=$this->approvalTable->findRoomSchedule($roomNo,'tuesday','schedule');
-            $roomSchedules['wednesday']=$this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule');
-            $roomSchedules['thursday']=$this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule');
-            $roomSchedules['friday']=$this->approvalTable->findRoomSchedule($roomNo,'friday','schedule');
+                    $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
+                    $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
+                    $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));
+                    $roomSchedules['tuesday']=array_merge($roomSchedules['tuesday'], $this->approvalTable->findRoomSchedule($roomNo,'tuesday','schedule'));
+                    $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
+                    $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
+                    $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
             $title='Request Room';
             return [
                 'template'=>'requestRoom.html.php',
@@ -69,35 +71,54 @@ class Request{
         // $schedules=$this->approvalTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
         // $approvals=$this->scheduleTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
         if($requestOperator->checkFree()){
-            if($requestOperator->checkRequestedDay()){
-                if(isset($requestForm['reason'])){
-                    echo "enter to reason</br>";
-                    $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
-                            'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
-                            'reason'=>$requestForm['reason'],'userId'=>$this->authentication->getUser()->id]);
+            if($requestOperator->isToday()){
+                if($requestOperator->checkTodayRequest()){
+                    header('Location: schedule');
                 }else{
-                    $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
+                    $roomNo=$requestForm['roomNo'];
+                    $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
+                    $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
+                    $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
+                    $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));
+                    $roomSchedules['tuesday']=array_merge($roomSchedules['tuesday'], $this->approvalTable->findRoomSchedule($roomNo,'tuesday','schedule'));
+                    $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
+                    $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
+                    $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
+                    $title='Request Room';
+                    $error="You can't request for today's previous period!";
+                    return [
+                        'template'=>'requestRoom.html.php',
+                        'title'=>$title,
+                        'variables'=>[
+                            'roomSchedules'=>$roomSchedules,
+                            'roomNo'=>$roomNo,
+                            'error'=>$error
+                        ]
+                    ];
+                }
+            }else{
+                date_default_timezone_set('Asia/Yangon');
+                $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
                         'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
-                        'section'=>$requestForm['section'],
-                        'subjectCode'=>$requestForm['subjectCode'],'userId'=>$this->authentication->getUser()->id]);
-                }  
-                
+                        'date'=>new DateTime(),'reason'=>$requestForm['reason'],
+                        'userId'=>$this->authentication->getUser()->id]); 
                 header('Location: schedule');   
             }
 
-               
-        }else{
+      }else{
             $roomNo=$requestForm['roomNo'];
             $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
-            $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
-            $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
-            $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
-            $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
-            $roomSchedules['monday']=$this->approvalTable->findRoomSchedule($roomNo,'monday','schedule');
-            $roomSchedules['tuesday']=$this->approvalTable->findRoomSchedule($roomNo,'tuesday','schedule');
-            $roomSchedules['wednesday']=$this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule');
-            $roomSchedules['thursday']=$this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule');
-            $roomSchedules['friday']=$this->approvalTable->findRoomSchedule($roomNo,'friday','schedule');
+                    $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
+                    $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
+                    $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));
+                    $roomSchedules['tuesday']=array_merge($roomSchedules['tuesday'], $this->approvalTable->findRoomSchedule($roomNo,'tuesday','schedule'));
+                    $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
+                    $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
+                    $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
             $title='Request Room';
             $error="Your requested schedule is not free";
             return [

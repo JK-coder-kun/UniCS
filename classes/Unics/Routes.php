@@ -129,8 +129,16 @@ class Routes{
 
     public function getNotification(){
         $userId=$this->authentication->getUser()->id;
-        $notifications=$this->notificationTable->find('userId',$userId);
+        $notifications=$this->notificationTable->find('userId',$userId,'id DESC');
         return $notifications;
+    }
+
+    public function getRequestOperator(){
+        $requestOperator=new \Unics\Controllers\RequestOperator($this->scheduleTable,
+                                                                $this->approvalTable,
+                                                                $this->requestTable,
+                                                                $this->notificationTable);
+        return $requestOperator;
     }
 
     public function checkPermission($permission): bool {
@@ -144,4 +152,3 @@ class Routes{
 	}
 
 }
-

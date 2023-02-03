@@ -199,7 +199,7 @@ class DatabaseTable {
 	public function findRoomSchedule($roomNo,$day,$tableName){
 		$parameters=['roomNo'=>$roomNo,'day'=>$day];
 
-		$query='SELECT `period` FROM '.$tableName.' WHERE `roomNo`=:roomNo AND `day`=:day';
+		$query='SELECT `period` FROM '.$this->table.' WHERE `roomNo`=:roomNo AND `day`=:day';
 		$result=$this->query($query,$parameters);
 		return $result->fetchAll();
 	}
@@ -251,7 +251,7 @@ class DatabaseTable {
 	private function processDates($fields) {
 		foreach ($fields as $key => $value) {
 			if ($value instanceof \DateTime) {
-				$fields[$key] = $value->format('m-d-h-i');
+				$fields[$key] = $value->format('y-m-d-h-i');
 			}
 		}
 
@@ -281,5 +281,17 @@ class DatabaseTable {
 		}
 
 		return $entity;	
+	}
+
+	public function findRequestByDate($date){
+		$query='SELECT * FROM '.$this->table.' WHERE date <:date';
+		$field=['date'=>$date];
+		$requests=$this->query($query,$field);
+		return $requests->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
+	}
+
+	public function deleteApproval($date){
+		$query='DELETE FROM '.$this->table.' WHERE date < :date';
+		$this->query($query,['date'=>$date]);
 	}
 }

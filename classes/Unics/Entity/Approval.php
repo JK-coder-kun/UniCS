@@ -1,10 +1,11 @@
 <?php
 namespace Unics\Entity;
 class Approval{
-    private $id;
-    private $period;
-    private $day;
-    private $section;
-    private $subjectCode;
-    private $reason;
+    public $id;
+    public $period;
+    public $day;
+    public $date;
+    public $section;
+    public $subjectCode;
+    public $reason;
 }

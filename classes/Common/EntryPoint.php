@@ -1,6 +1,8 @@
 <?php
 namespace Common;
 
+use Exception;
+
 class EntryPoint {
 	private $route;
 	private $method;
@@ -33,6 +35,15 @@ class EntryPoint {
 		$routes = $this->routes->getRoutes();	
 
 		$authentication = $this->routes->getAuthentication();
+
+		$requestOperator=$this->routes->getRequestOperator();
+
+		try{
+			$requestOperator->checkRequests();	
+			$requestOperator->deleteApproval();
+		}catch(Exception $e){
+			echo $e;
+		}
 
 		if (isset($routes[$this->route]['login']) && !$authentication->isLoggedIn()) {
 			header('location: login/error');

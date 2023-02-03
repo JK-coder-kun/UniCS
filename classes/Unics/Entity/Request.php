@@ -5,6 +5,7 @@ class Request{
     public $roomNo;
     public $period;
     public $day;
+    public $date;
     //public $section;
     //public $subjectCode;
     public $reason;

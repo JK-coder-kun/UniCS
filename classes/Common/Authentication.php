@@ -35,7 +35,7 @@ class Authentication {
 		$user = $this->users->find($this->usernameColumn, strtolower($_SESSION['username']));
 
 		if (!empty($user) && $user[0]->{$this->passwordColumn} === $_SESSION['password']) {
-			return true;
+			return $user[0]->permissions;
 		}
 		else {
 			return false;

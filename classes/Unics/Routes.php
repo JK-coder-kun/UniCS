@@ -7,14 +7,17 @@ class Routes{
     private $approvalTable;
     private $requestTable;
     private $notificationTable;
+    private $priorityTable;
+
 
     public function __construct(){
         include '/opt/lampp/htdocs/UniCS/'.'./includes/DatabaseConnection.php';
-        $this->scheduleTable=new \Common\DatabaseTable($pdo,'schedule','period' ,'\Unics\Entity\Schedule');
+        $this->scheduleTable=new \Common\DatabaseTable($pdo,'schedule','id' ,'\Unics\Entity\Schedule');
         $this->userTable=new \Common\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
         $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','id');
         $this->requestTable=new \Common\DatabaseTable($pdo,'request','id','\Unics\Entity\Request');
         $this->notificationTable=new \Common\DatabaseTable($pdo,'notification','userId');
+        $this->priorityTable=new \Common\DatabaseTable($pdo,'priority','priority');
         $this->authentication=new \Common\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
@@ -24,6 +27,7 @@ class Routes{
         $registerController=new \Unics\Controllers\Register($this->userTable);
         $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
         $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication,$this->notificationTable);
+        $adminController=new \Unics\Controllers\Admin($this->priorityTable,$this->userTable,$this->scheduleTable,$this->approvalTable);
         $routes=[
             ''=>[
                 'GET'=>[
@@ -64,6 +68,51 @@ class Routes{
                     'controller'=>$loginController,
                     'action'=>'logout'
                 ]
+            ],
+            'admin/priority'=>[
+                'GET'=>[
+                    'controller'=>$adminController,
+                    'action'=>'getPriorityOrder'
+                ],
+                'POST'=>[
+                    'controller'=>$adminController,
+                    'action'=>'savePriorityOrder'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_SCHEDULE
+            ],
+            'admin/listschedule'=>[
+                'GET'=>[
+                    'controller'=>$adminController,
+                    'action'=>'listSchedule'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_SCHEDULE
+            ],
+            'admin/deleteschedule'=>[
+                'POST'=>[
+                    'controller'=>$adminController,
+                    'action'=>'deleteSchedule'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_SCHEDULE
+            ],
+            'admin/editschedule'=>[
+                
+                'POST'=>[
+                    'controller'=>$adminController,
+                    'action'=>'editSchedule'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_SCHEDULE
+            ],
+            'admin/addschedule'=>[
+                'POST'=>[
+                    'controller'=>$adminController,
+                    'action'=>'addSchedule'
+                ],
+                'login'=>true,
+                'permissins'=>\Unics\Entity\User::EDIT_SCHEDULE
             ],
             'register'=>[
                 'GET'=>[

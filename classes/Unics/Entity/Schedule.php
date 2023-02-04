@@ -2,6 +2,7 @@
 namespace Unics\Entity;
 
 class Schedule{
+    public $id;
     public $roomNo;
     public $period;
     public $day;

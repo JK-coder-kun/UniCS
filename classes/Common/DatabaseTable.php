@@ -84,6 +84,36 @@ class DatabaseTable {
 		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
+	public function findMultiColumn($fields,$orderBy = null, $limit = null, $offset = null){
+		$query=	'SELECT * FROM ' . $this->table . ' WHERE ';
+		foreach ($fields as $key => $value) {
+			if($key=='roomNo' || $key=='subjectCode'){
+				$fields[$key]=$value."%";
+				$query.= ' `' . $key . '` LIKE :'.$key.' AND';
+			}else{
+				$query .= ' `' . $key . '`= :'.$key.' AND';
+			}
+			
+		}
+
+		$query = rtrim($query, 'AND');
+
+		if ($orderBy != null) {
+			$query .= ' ORDER BY ' . $orderBy;
+		}
+
+		if ($limit != null) {
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if ($offset != null) {
+			$query .= ' OFFSET ' . $offset;
+		}
+		$query = $this->query($query, $fields);
+
+		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
+	}
+
 	public function findByTwoColumn($column1,$value1,$column2,$value2,$orderBy = null, $limit = null, $offset = null){
 		$query=	'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND '. 
 				$column2. ' = :value2';
@@ -160,7 +190,7 @@ class DatabaseTable {
 	}
 
 
-	private function update($fields) {
+	public function update($fields) {
 		$query = ' UPDATE `' . $this->table .'` SET ';
 
 		foreach ($fields as $key => $value) {

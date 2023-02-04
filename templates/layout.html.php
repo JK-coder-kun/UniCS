@@ -37,8 +37,6 @@
 
 <body>
 
-
-
     <!-- the template -->
     <nav class="navbar bg-future navbar-dark navbar-expand-md sticky-top">
         <div class="container-fluid">
@@ -73,6 +71,12 @@
                     <li class="nav-item">
                         <a href="#profile" class="nav-link">Profile</a>
                     </li>
+
+                    <?php if ($loggedIn>=4) : ?>
+                        <li class="nav-item">
+                            <a href="/UniCS/public/admin/listschedule" class="nav-link">Admin Control</a>
+                        </li>
+                    <?php endif; ?>
 
                     <li class="nav-item">
                         <?php if ($loggedIn) : ?>

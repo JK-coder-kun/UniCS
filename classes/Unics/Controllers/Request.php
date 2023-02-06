@@ -11,18 +11,21 @@ class Request{
     private $authentication;
     private $requestOperator;
     private $notificationTable;
+    private $priorityTable;
     private $request;
 
     public function __construct(DatabaseTable $scheduleTable,
                                 DatabaseTable $requestTable,
                                 DatabaseTable $approvalTable,
                                 Authentication $authentication,
+                                DatabaseTable $priorityTable,
                                 DatabaseTable $notificationTable)
     {
         $this->scheduleTable=$scheduleTable;
         $this->requestTable=$requestTable;
         $this->approvalTable=$approvalTable;
         $this->authentication=$authentication;
+        $this->priorityTable=$priorityTable;
         $this->notificationTable=$notificationTable;
     }
 
@@ -39,6 +42,8 @@ class Request{
                     $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
                     $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
                     $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
+                    $priority=$this->priorityTable->findAll('priority DESC');
+
             $title='Request Room';
             return [
                 'template'=>'requestRoom.html.php',
@@ -46,16 +51,13 @@ class Request{
                 'variables'=>[
                     'roomSchedules'=>$roomSchedules,
                     'roomNo'=>$roomNo,
+                    'priority'=>$priority,
                     'period'=>$_GET['period']??null,
                     'day'=>$_GET['day']??null
                 ]
             ];
         }else{
-            $title='Schedule';
-            return [
-                'template'=>'showSchedule.html.php',
-                'title'=>$title
-            ];
+            header('Location:schedule');
         }
     }
     public function sendRequest(){
@@ -86,6 +88,7 @@ class Request{
                     $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
                     $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
                     $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
+                    $priority=$this->priorityTable->findAll('priority DESC');
                     $title='Request Room';
                     $error="You can't request for today's previous period!";
                     return [
@@ -94,6 +97,7 @@ class Request{
                         'variables'=>[
                             'roomSchedules'=>$roomSchedules,
                             'roomNo'=>$roomNo,
+                            'priority'=>$priority,
                             'error'=>$error
                         ]
                     ];
@@ -119,6 +123,7 @@ class Request{
                     $roomSchedules['wednesday']=array_merge($roomSchedules['wednesday'], $this->approvalTable->findRoomSchedule($roomNo,'wednesday','schedule'));
                     $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
                     $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
+                    $priority=$this->priorityTable->findAll('priority DESC');
             $title='Request Room';
             $error="Your requested schedule is not free";
             return [
@@ -126,6 +131,7 @@ class Request{
                 'title'=>$title,
                 'variables'=>[
                     'roomSchedules'=>$roomSchedules,
+                    'priority'=>$priority,
                     'roomNo'=>$roomNo,
                     'error'=>$error
                 ]

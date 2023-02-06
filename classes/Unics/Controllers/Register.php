@@ -57,6 +57,10 @@ class Register {
 			$valid = false;
 			$errors[] = 'Password cannot be blank';
 		}
+		if(empty($user['permissions'])){
+			$valid=false;
+			$errors[]='User type cannot be blank';
+		}
 		//If $valid is still true, no fields were blank and the data can be added
 		if ($valid == true) {
 			//Hash the password before saving it in the database

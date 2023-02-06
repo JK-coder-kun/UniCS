@@ -26,7 +26,7 @@ class Routes{
         $loginController= new \Unics\Controllers\Login($this->authentication);
         $registerController=new \Unics\Controllers\Register($this->userTable);
         $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
-        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication,$this->notificationTable);
+        $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication,$this->priorityTable,$this->notificationTable);
         $adminController=new \Unics\Controllers\Admin($this->priorityTable,$this->userTable,$this->scheduleTable,$this->approvalTable);
         $routes=[
             ''=>[
@@ -122,7 +122,9 @@ class Routes{
                 'POST'=>[
                     'controller'=>$registerController,
                     'action'=>'registerUser'
-                ]
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
                 ],
             'register/success'=>[
                 'GET'=>[

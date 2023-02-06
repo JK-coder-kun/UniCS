@@ -1,52 +1,159 @@
-<?php 
-print_r($filter);
-$postFilter="";
+<?php
+
+
+// print_r($filter);
+
+$postFilter = "";
 ?>
-<?php foreach($filter as $key=>$value){
-        $postFilter.="<input type=\"hidden\" name=\"filter[".$key."]\" value=\"".$value."\">";
-    }?>
 
-<form action="/UniCS/public/admin/listschedule" method="get">
-    <label for="filter[roomNo]">RoomNo</label>
-    <span><input type="number" name="filter[roomNo]" id="" value=<?=$filter['roomNo']??''?> ></span>
-    <label for="filter[period]">Period</label>
-    <span><input type="number" name="filter[period]" id="" value=<?=$filter['period']??''?>></span>
-    <label for="filter[day]">Day</label>
-    <span><input type="text" name="filter[day]" id="" value=<?=$filter['day']??''?>></span>
-    <label for="filter[section]">Section</label>
-    <span><input type="text" name="filter[section]" id="" value=<?=$filter['section']??''?>></span>
-    <label for="filter[subjectCode]">subjectCode</label>
-    <span><input type="number" name="filter[subjectCode]" id="" value=<?=$filter['subjectCode']??''?>></span>
-    <input type="submit" value="Filter">
-</form>
-<button><a href="/UniCS/public/admin/listschedule">All</a></button>
-</br>
+<!-- also showing warning error on my side, so I put the foreach loop in a if condition -->
+<?php
+if ($filter) {
+    // echo "filter is in";
+    foreach ($filter as $key => $value) {
+        $postFilter .= "<input type=\"hidden\" name=\"filter[" . $key . "]\" value=\"" . $value . "\">";
+    }
+} else {
+    // echo "filter is empty";
+}
 
-<?php foreach($result as $row):?>
-    <form action="/UniCS/public/admin/editschedule" method="post">
-    <?=$postFilter?>
-    <input type="hidden" name="schedule[id]" value=<?=$row->id?>>
-    <span><input type="number" name="schedule[roomNo]" id="" value=<?=$row->roomNo?> ></span>
-    <span><input type="number" name="schedule[period]" id="" value=<?=$row->period?>></span>
-    <span><input type="text" name="schedule[day]" id="" value=<?=$row->day?>></span>
-    <span><input type="text" name="schedule[section]" id="" value=<?=$row->section ?>></span>
-    <span><input type="number" name="schedule[subjectCode]" id="" value=<?=$row->subjectCode?>></span>
-    <span><input type="submit" value="Edit"></span>
-</form>
-<form action="/UniCS/public/admin/deleteschedule" method="post">
-    <input type="hidden" name="id" value=<?=$row->id?>>
-    <?=$postFilter?>
-    <input type="submit" value="Delete">
-</form>
-<?php endforeach;?>    
+?>
+<div class="mt-3 mb-3 p-3">
+    <!-- original filter -->
+    <!-- <?php foreach ($filter as $key => $value) {
+                $postFilter .= "<input type=\"hidden\" name=\"filter[" . $key . "]\" value=\"" . $value . "\">";
+            } ?> -->
 
-</br>
-<form action="/UniCS/public/admin/addschedule" method="post">
-    <?=$postFilter?>
-    <span><input type="number" name="schedule[roomNo]" id="" value=<?=$filter['roomNo']??''?> required></span>
-    <span><input type="number" name="schedule[period]" id="" value=<?=$filter['period']??''?> required></span>
-    <span><input type="text" name="schedule[day]" id="" value=<?=$filter['day']??''?> ></span>
-    <span><input type="text" name="schedule[section]" id="" value=<?=$filter['section']??''?> ></span>
-    <span><input type="number" name="schedule[subjectCode]" id="" value=<?=$filter['subjectCode']??''?> ></span>
-    <input type="submit" value="Add Schedule">
-</form>
+    <h3>Edit Schedule</h3>
+    <hr>
+
+    <form action="/UniCS/public/admin/listschedule" method="get" class='row g-2'>
+        <label class='visually-hidden' for="filter[roomNo]">RoomNo</label>
+        <span class='col-sm-2'>
+            <input type="number" name="filter[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?>>
+        </span>
+
+        <label class='visually-hidden' for="filter[period]">Period</label>
+        <span class='col-sm-2'>
+            <input type="number" name="filter[period]" id="" class='form-control' placeholder='Period' value=<?= $filter['period'] ?? '' ?>>
+        </span>
+
+        <label class='visually-hidden' for="filter[day]">Day</label>
+        <span class='col-sm-auto'>
+            <input type="text" name="filter[day]" id="" class='form-control' placeholder='Day' value=<?= $filter['day'] ?? '' ?>>
+        </span>
+
+        <label class='visually-hidden' for="filter[section]">Section</label>
+        <span class='col-sm-2'>
+            <input type="text" name="filter[section]" id="" class='form-control' placeholder='Section' value=<?= $filter['section'] ?? '' ?>>
+        </span>
+
+        <label class='visually-hidden' for="filter[subjectCode]">subjectCode</label>
+        <span class='col-sm-2'>
+            <input type="number" name="filter[subjectCode]" id="" class='form-control' placeholder='Subject Code' value=<?= $filter['subjectCode'] ?? '' ?>>
+        </span>
+
+        <span class="col-sm-auto">
+            <input type="submit" class='btn btn-primary' value="Filter">
+        </span>
+
+        <span class="col-sm-auto">
+            <a class='btn btn-primary' href="/UniCS/public/admin/listschedule">All</a>
+        </span>
+    </form>
+
+    <!-- <hr> -->
+    <br>
+
+<div class="container-fluid p-4" style='background-color:#66ffb3'>
+        <div class="row mb-3 gx-1">
+            <span class="col-11">
+                <form action="" class="row">
+                    <span class='col-sm-2'>
+                        <input type="text" name="" id="" class='form-control dummy-form bg-dark' value='' placeholder="Room Number" >
+                    </span>
+                    <span class='col-sm-2'>
+                        <input type="text" name="" id="" class='form-control dummy-form bg-dark' value='' placeholder="Period" >
+                    </span>
+                    <span class='col-sm-2'>
+                        <input type="text" name="" id="" class='form-control dummy-form bg-dark' value='' placeholder="Section" >
+                    </span>
+                    <span class='col-sm-2'>
+                        <input type="text" name="" id="" class='form-control dummy-form bg-dark' value='' placeholder="Day" >
+                    </span>
+                    <span class='col-sm-2'>
+                        <input type="text" name="" id="" class='form-control dummy-form bg-dark' value='' placeholder="Subject Code" >
+                    </span>
+                </form>
+            </span>
+            <!-- dummy code as placeholder -->
+            <span class="col-1"></span>
+        </div>
+
+        <?php foreach ($result as $row) : ?>
+            <div class='row mb-3 gx-1'>
+                <span class='col-11'>
+                    <form action="/UniCS/public/admin/editschedule" method="post" class='row'>
+                        <?= $postFilter ?>
+                        <input type="hidden" name="schedule[id]" value=<?= $row->id ?>>
+                        <span class='col-sm-2'>
+                            <input type="number" name="schedule[roomNo]" id="" class='form-control' value=<?= $row->roomNo ?>>
+                        </span>
+                        <span class='col-sm-2'>
+                            <input type="number" name="schedule[period]" id="" class='form-control' value=<?= $row->period ?>>
+                        </span>
+                        <span class='col-sm-2'>
+                            <input type="text" name="schedule[day]" id="" class='form-control' value=<?= $row->day ?>>
+                        </span>
+                        <span class='col-sm-2'>
+                            <input type="text" name="schedule[section]" id="" class='form-control' value=<?= $row->section ?>>
+                        </span>
+                        <span class='col-sm-2'>
+                            <input type="number" name="schedule[subjectCode]" id="" class='form-control' value=<?= $row->subjectCode ?>>
+                        </span>
+                        <span class='col-sm-2'>
+                            <input type="submit" class='form-control btn btn-primary' value="Edit">
+                        </span>
+                    </form>
+                </span>
+
+                <span class='col-1'>
+                    <form action="/UniCS/public/admin/deleteschedule" method="post">
+                        <input type="hidden" name="id" value=<?= $row->id ?>>
+                        <?= $postFilter ?>
+                        <input class='btn btn-danger' type="submit" value="Delete">
+                    </form>
+                </span>
+            </div>
+
+
+        <?php endforeach; ?>
+    </div>
+
+
+    <!-- <hr> -->
+    <br>
+    
+    <form action="/UniCS/public/admin/addschedule" method="post" class='row g-2'>
+        <?= $postFilter ?>
+        <span class='col-sm-2'>
+            <input type="number" name="schedule[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?> required>
+        </span>
+        <span class='col-sm-2'>
+            <input type="number" name="schedule[period]" id="" class='form-control' placeholder='Period' value=<?= $filter['period'] ?? '' ?> required>
+        </span>
+        <span class='col-sm-2'>
+            <input type="text" name="schedule[day]" id="" class='form-control' placeholder='Day' value=<?= $filter['day'] ?? '' ?>>
+        </span>
+        <span class='col-sm-2'>
+            <input type="text" name="schedule[section]" id="" class='form-control' placeholder='Section' value=<?= $filter['section'] ?? '' ?>>
+        </span>
+        <span class='col-sm-2'>
+            <input type="number" name="schedule[subjectCode]" id="" class='form-control' placeholder='Subject Code' value=<?= $filter['subjectCode'] ?? '' ?>>
+        </span>
+        <span class='col-sm-2'>
+            <input class='btn btn-primary' type="submit" value="Add">
+        </span>
+
+    </form>
+</div>

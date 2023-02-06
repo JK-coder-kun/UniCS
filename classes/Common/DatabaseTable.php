@@ -229,7 +229,7 @@ class DatabaseTable {
 	public function findRoomSchedule($roomNo,$day,$tableName){
 		$parameters=['roomNo'=>$roomNo,'day'=>$day];
 
-		$query='SELECT `period` FROM '.$this->table.' WHERE `roomNo`=:roomNo AND `day`=:day';
+		$query='SELECT * FROM '.$this->table.' WHERE `roomNo`=:roomNo AND `day`=:day';
 		$result=$this->query($query,$parameters);
 		return $result->fetchAll();
 	}

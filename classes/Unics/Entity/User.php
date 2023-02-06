@@ -15,4 +15,9 @@ class User{
     public function hasPermission($permission) {
 		return $this->permissions & $permission;  
 	}
+
+    public function resetPassword(){
+      echo "password";
+      header('Location:admin/listschedule');
+    }
 }

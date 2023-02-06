@@ -128,8 +128,8 @@ class RequestOperator
     public function sendApproval($requests)
     {
         foreach ($requests as $request) {
-            $notiText = "Your request has been approved!\nRoom No:" . $request->roomNo
-                . "\nTime :" . $request->day . ", period " . $request->period;
+            $notiText = "Your request has been approved!</br>Room No:" . $request->roomNo
+                . ",  Time :" . $request->day . ", period " . $request->period;
             $notiInfo = [
                 'userId' => $request->userId, 'status' => 1, 'time' => new DateTime(),
                 'notiText' => $notiText

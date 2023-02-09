@@ -57,7 +57,7 @@ class Register {
 			$valid = false;
 			$errors[] = 'Password cannot be blank';
 		}
-		if(empty($user['permissions'])){
+		if(empty($user['permissions'])&&$user['permissions']!=0){
 			$valid=false;
 			$errors[]='User type cannot be blank';
 		}

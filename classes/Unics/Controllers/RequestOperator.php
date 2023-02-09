@@ -83,23 +83,23 @@ class RequestOperator
         $this->approveRequest([$this->request]);
         return true;
     }
-    public function checkFree()
+    public function checkFree($request)
     {
         $approvals = $this->approvalTable->findByThreeColumn(
             'period',
-            $this->request->period,
+            $request->period,
             'day',
-            $this->request->day,
+            $request->day,
             'roomNo',
-            $this->request->roomNo
+            $request->roomNo
         );
         $schedules = $this->scheduleTable->findByThreeColumn(
             'period',
-            $this->request->period,
+            $request->period,
             'day',
-            $this->request->day,
+            $request->day,
             'roomNo',
-            $this->request->roomNo
+            $request->roomNo
         );
         return (empty($approvals) && empty($schedules));
     }
@@ -173,7 +173,7 @@ class RequestOperator
         foreach ($requests as $request) {
             $user = $this->userTable->findById($request->userId);
             //print_r($user);
-            if ($user->role == 'par choke') {
+            if ($user->role == 'admin') {
                 $chosenReq = $request;
             } else if ($priority[$request->reason] == sizeof($priority)) {
                 $chosenReq = $request;
@@ -184,11 +184,13 @@ class RequestOperator
                     $chosenReq = $request;
                 }
             }
-            print_r($chosenReq);
+            echo "Chosenrequest is ";
+            print_r($chosenReq);echo '</br>';
         }
         echo "</br>rejections";
         $chosenIndex = array_search($chosenReq, $requests);
         array_splice($requests, $chosenIndex, 1);
+        echo "rejected request are";print_r($requests);echo "</br>";
         $this->rejectRequest($requests);
         return $chosenReq;
     }
@@ -210,6 +212,7 @@ class RequestOperator
                 //remove all elements from conflicts array
                 $conflicts = array_diff($conflicts, $conflicts);
                 $isThereConflict = false;
+                $firstConflictAdded=false;
                 for ($b = $a + 1; $b < $size; $b++) {
                     if (
                         $requestToCheck[$a]->day == $requestToCheck[$b]->day &&
@@ -217,7 +220,11 @@ class RequestOperator
                         $requestToCheck[$a]->roomNo == $requestToCheck[$b]->roomNo
                     ) {
                         $isThereConflict = true;
-                        $conflicts[] = $requestToCheck[$a];
+                        if(!$firstConflictAdded){
+                            $firstConflictAdded=true;
+                            $conflicts[] = $requestToCheck[$a];
+                        }
+                        $conflicts[]=$requestToCheck[$b];
                         $temp = $requestToCheck[$a + 1];
                         $requestToCheck[$a + 1] = $requestToCheck[$b];
                         $requestToCheck[$b] = $temp;

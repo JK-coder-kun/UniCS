@@ -16,7 +16,7 @@ class Routes{
         $this->userTable=new \Common\DatabaseTable($pdo,'user','id','\Unics\Entity\User');
         $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','id');
         $this->requestTable=new \Common\DatabaseTable($pdo,'request','id','\Unics\Entity\Request');
-        $this->notificationTable=new \Common\DatabaseTable($pdo,'notification','userId');
+        $this->notificationTable=new \Common\DatabaseTable($pdo,'notification','id');
         $this->priorityTable=new \Common\DatabaseTable($pdo,'priority','priority');
         $this->authentication=new \Common\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
@@ -181,7 +181,11 @@ class Routes{
     public function getNotification(){
         $userId=$this->authentication->getUser()->id;
         $notifications=$this->notificationTable->find('userId',$userId,'id DESC');
-        return $notifications;
+        $totalUnread=$this->notificationTable->total(['userId'=>$userId,'status'=>'1']);
+        return [
+            'notifications'=>$notifications,
+            'totalUnread'=>$totalUnread
+        ];
     }
 
     public function getRequestOperator(){

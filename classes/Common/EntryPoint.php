@@ -71,11 +71,12 @@ class EntryPoint {
 																	'title'=>$title		
 				]);
 			}else{
-				$notifications=$this->routes->getNotification();
+				$notificationInfo=$this->routes->getNotification();
 				echo $this->loadTemplate('layout.html.php', ['loggedIn' => $authentication->isLoggedIn(),
 			                                             'output' => $output,
 			                                             'title' => $title,
-														 'notifications'=>$notifications
+														 'notifications'=>$notificationInfo['notifications'],
+														 'totalUnread'=>$notificationInfo['totalUnread']
 			                                            ]);
 			}
 			

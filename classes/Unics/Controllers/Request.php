@@ -72,7 +72,7 @@ class Request{
 
         // $schedules=$this->approvalTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
         // $approvals=$this->scheduleTable->findByThreeColumn('period',$requestForm['period'],'day',$requestForm['day'],'roomNo',$requestForm['roomNo']);
-        if($requestOperator->checkFree()){
+        if($requestOperator->checkFree($this->request)){
             if($requestOperator->isToday()){
                 if($requestOperator->checkTodayRequest()){
                     header('Location: schedule');

@@ -26,8 +26,9 @@
             text-align: center;
             color: white;
         }
-        .dummy-form{
-            border:0px solid white;
+
+        .dummy-form {
+            border: 0px solid white;
         }
 
         /* footer problem fixed? */
@@ -39,14 +40,32 @@
             justify-content: space-between;
         }
 
-        .form-control{
+        .form-control {
             /* color changed to a shade of --bs-border-color: #dee2e6; */
-            border-color:#a8b3bd;
+            border-color: #a8b3bd;
         }
     </style>
+    <script>
+        function changeStatus(id,userid) {
+            var xhttp = new XMLHttpRequest();
+            var totalNoti=document.getElementById("totalUnread").value;
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("totalUnread").innerHTML = this.responseText;
+                    // document.getElementById("noti").innerHTML = '<span class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger"><span id="totalUnread"><?php echo $totalUnread; ?></span><span class="visually-hidden">unread messages</span></span>';
+                }
+            };
+            //alert("you click noti"+st);
+            xhttp.open("GET", "../templates/changeNotiStatus.php?userId="+userid+"&notiId="+id, true);
+            xhttp.send();
+            //document.getElementById("totalNoti").innerHTML = totalNoti;
+
+        }
+    </script>
 </head>
 
 <body>
+    <div id="demo"></div>
     <nav class="navbar bg-primary navbar-dark navbar-expand-md sticky-top">
         <div class="container-fluid">
             <a href="#" class="navbar-brand" id="navbar-brand">U<span style="color:#FF6A00;">ni</span>CS</a>
@@ -59,7 +78,7 @@
                         <a href="#profile" class="nav-link">Profile</a>
                     </li>
 
-                    <?php if ($loggedIn >= 4) : ?>
+                    <?php if ($loggedIn->permission >= 4) : ?>
                         <li class="nav-item">
                             <a href="/UniCS/public/admin/listschedule" class="nav-link">Admin Control</a>
                         </li>
@@ -72,8 +91,11 @@
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
                             </svg>
                             <span class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger">
-                                <?php echo sizeof($notifications); ?>
-                                <!-- 123 -->
+                                <span id="totalUnread">
+                                    <?php echo $totalUnread; ?>
+                                </span>
+                                
+                                
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                         </a>
@@ -104,13 +126,16 @@
             if (sizeof($notifications) > 0) {
                 foreach ($notifications as $item) {
             ?>
-                    <li style="font-size: small;"><?= $item->notiText; ?></br>
-                        <!-- send at :<?= $item->time ?> -->
-                        <em>send at <?php
-                                $date = date('d-m-y h:i:s');
-                                echo $date;
-                                ?></em>
-                    </li>
+                    <form method="get">
+                        <li onclick="changeStatus('<?=$item->id;?>','<?=$item->userid;?>')" style="font-size: small;"><?= $item->notiText; ?></br>
+                            <!-- send at :<?= $item->time ?> -->
+                            <em>send at <?php
+                                        $date = date('d-m-y h:i:s');
+                                        echo $date;
+                                        ?></em>
+                        </li>
+                    </form>
+
                     <hr>
             <?php }
             } ?>

@@ -33,14 +33,20 @@ class DatabaseTable {
 		}
 	}	
 
-	public function total($field = null, $value = null) {
+	public function total($fields = null) {
 		$sql = 'SELECT COUNT(*) FROM `' . $this->table . '`';
 		$parameters = [];
 
-		if (!empty($field)) {
-			$sql .= ' WHERE `' . $field . '` = :value';
-			$parameters = ['value' => $value];
+		if (!empty($fields)) {
+			$sql.=' WHERE';
+			foreach($fields as $key=>$value){
+				$sql .=' `' . $key . '` = :' . $key . ' AND';
+			}
+			// $sql .= ' WHERE `' . $field . '` = :value';
+			// $parameters = ['value' => $value];
+			$parameters=$fields;
 		}
+		$sql=rtrim($sql,'AND');
 		
 		$query = $this->query($sql, $parameters);
 		$row = $query->fetch();
@@ -314,7 +320,7 @@ class DatabaseTable {
 	}
 
 	public function findRequestByDate($date){
-		$query='SELECT * FROM '.$this->table.' WHERE date <:date';
+		$query='SELECT * FROM '.$this->table.' WHERE date >:date';
 		$field=['date'=>$date];
 		$requests=$this->query($query,$field);
 		return $requests->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);

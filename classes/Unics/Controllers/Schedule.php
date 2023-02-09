@@ -25,7 +25,7 @@ class Schedule{
         $rooms['215']=false;
         $rooms['216']=false;
         for($building=2;$building<=3;$building++){
-            for($floor=2;$floor<=3;$floor++){
+            for($floor=1;$floor<=3;$floor++){
                 for($room=1;$room<=6;$room++){
                     $roomNo=$building.$floor.$room;
                     $rooms[$roomNo]=false;

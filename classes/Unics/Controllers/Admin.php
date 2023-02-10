@@ -47,8 +47,11 @@ class Admin
                     unset($filter[$key]);
                 }
             }
-
-            $result = $this->scheduleTable->findMultiColumn($filter);
+            if(empty($filter)){
+                $result = $this->scheduleTable->findAll();
+            }else{
+                $result = $this->scheduleTable->findMultiColumn($filter);
+            }
         } else {
             $result = $this->scheduleTable->findAll();
         }

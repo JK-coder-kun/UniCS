@@ -132,13 +132,30 @@ class Routes{
                     'action'=>'success'
                 ]
                 ],
-            'user/list'=>[
+            'listuser'=>[
                 'GET'=>[
                     'controller'=>$registerController,
                     'action'=>'list'
                 ],
+                'login'=>true,
                 'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
                 ],
+            'changeuserinfo'=>[
+                'POST'=>[
+                    'controller'=>$registerController,
+                    'action'=>'changeInfo'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
+            ],
+            'resetpassword'=>[
+                'POST'=>[
+                    'controller'=>$registerController,
+                    'action'=>'resetPassword'
+                ],
+                'login'=>true,
+                'permissions'=>\Unics\Entity\User::EDIT_PERMISSION
+            ],
             'editpermission'=>[
                 'GET'=>[
                     'controller'=>$registerController,

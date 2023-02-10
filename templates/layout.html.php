@@ -78,9 +78,12 @@
                         <a href="#profile" class="nav-link">Profile</a>
                     </li>
 
-                    <?php if ($loggedIn->permission >= 4) : ?>
+                    <?php if ($loggedIn->permissions >= 4) : ?>
                         <li class="nav-item">
-                            <a href="/UniCS/public/admin/listschedule" class="nav-link">Admin Control</a>
+                            <a href="/UniCS/public/admin/listschedule" class="nav-link">Edit Schedule</a>
+                            <a href="/UniCS/public/admin/priority" class="nav-link">Priority Order</a>
+                            <a href="/UniCS/public/listuser" class="nav-link">User List</a>
+                            <a href="/UniCS/public/register" class="nav-link">Register User</a>
                         </li>
                     <?php endif; ?>
 

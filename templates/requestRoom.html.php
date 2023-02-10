@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 <?php
-                if (isset($error)) echo "<p color='red'>" . $error . "</p></br>";
+                if (isset($error)) echo "<p style=\"color:'red';\">" . $error . "</p></br>";
 
                 foreach ($roomSchedules as $key => $values) {
 

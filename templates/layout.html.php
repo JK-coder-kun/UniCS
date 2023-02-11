@@ -75,7 +75,7 @@
                         <a href="/UniCS/public/schedule" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#profile" class="nav-link">Profile</a>
+                        <a href="/UniCS/public/profile" class="nav-link">Profile</a>
                     </li>
 
                     <?php if ($loggedIn->permissions >= 4) : ?>
@@ -132,10 +132,7 @@
                     <form method="get">
                         <li onclick="changeStatus('<?=$item->id;?>','<?=$item->userid;?>')" style="font-size: small;"><?= $item->notiText; ?></br>
                             <!-- send at :<?= $item->time ?> -->
-                            <em>send at <?php
-                                        $date = date('d-m-y h:i:s');
-                                        echo $date;
-                                        ?></em>
+                            <em>send at <?=$item->time?></em>
                         </li>
                     </form>
 

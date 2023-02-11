@@ -36,6 +36,28 @@ class Admin
 
     public function savePriorityOrder()
     {
+        if (isset($_POST['priorityOrder'])) {
+            $priorityOrder = $_POST['priorityOrder'];
+            if (sizeof(array_unique($priorityOrder)) != sizeof($priorityOrder)) {
+                $error = "Priority value must be unique!";
+                $priorityOrder = $this->priorityTable->findAll('priority DESC');
+                $titile = "Priority Order";
+                return [
+                    'template' => 'admin.priority.html.php',
+                    'title' => $titile,
+                    'variables' => [
+                        'priorityOrder' => $priorityOrder,
+                        'error'=>$error
+                    ]
+                ];
+            }
+            foreach($priorityOrder as $key=>$value){
+                $this->priorityTable->update(['reason'=>$key,'priority'=>$value]);
+                header('Location:priority');
+            }
+        }else{
+            header('Location:priority');
+        }
     }
 
     public function listSchedule()
@@ -47,9 +69,9 @@ class Admin
                     unset($filter[$key]);
                 }
             }
-            if(empty($filter)){
+            if (empty($filter)) {
                 $result = $this->scheduleTable->findAll();
-            }else{
+            } else {
                 $result = $this->scheduleTable->findMultiColumn($filter);
             }
         } else {
@@ -71,25 +93,25 @@ class Admin
         $filter = $_POST['filter'];
         $schedule = $_POST['schedule'];
         $this->scheduleTable->update($schedule);
-        $urlString="";
-        foreach($filter as $key=>$value){
-            $urlString.="filter%5B".$key."%5D=".$value."&";
+        $urlString = "";
+        foreach ($filter as $key => $value) {
+            $urlString .= "filter%5B" . $key . "%5D=" . $value . "&";
         }
-        $urlString=rtrim($urlString,'&');
-        header("Location:listschedule?".$urlString);
+        $urlString = rtrim($urlString, '&');
+        header("Location:listschedule?" . $urlString);
     }
 
     public function deleteSchedule()
     {
         $filter = $_POST['filter'];
-        $id=$_POST['id'];
-        $this->scheduleTable->deleteWhere('id',$id);
-        $urlString="";
-        foreach($filter as $key=>$value){
-            $urlString.="filter%5B".$key."%5D=".$value."&";
+        $id = $_POST['id'];
+        $this->scheduleTable->deleteWhere('id', $id);
+        $urlString = "";
+        foreach ($filter as $key => $value) {
+            $urlString .= "filter%5B" . $key . "%5D=" . $value . "&";
         }
-        $urlString=rtrim($urlString,'&');
-        header("Location:listschedule?".$urlString);
+        $urlString = rtrim($urlString, '&');
+        header("Location:listschedule?" . $urlString);
     }
 
     public function addSchedule()
@@ -97,11 +119,11 @@ class Admin
         $filter = $_POST['filter'];
         $schedule = $_POST['schedule'];
         $this->scheduleTable->save($schedule);
-        $urlString="";
-        foreach($filter as $key=>$value){
-            $urlString.="filter%5B".$key."%5D=".$value."&";
+        $urlString = "";
+        foreach ($filter as $key => $value) {
+            $urlString .= "filter%5B" . $key . "%5D=" . $value . "&";
         }
-        $urlString=rtrim($urlString,'&');
-        header("Location:listschedule?".$urlString);
+        $urlString = rtrim($urlString, '&');
+        header("Location:listschedule?" . $urlString);
     }
 }

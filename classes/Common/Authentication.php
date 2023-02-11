@@ -27,6 +27,12 @@ class Authentication {
 		}
 	}
 
+	public function changePassword($id,$email,$newpassword){
+		$this->users->update(['id'=>$id,'password'=>$newpassword]);
+		$_SESSION['username'] = $email;
+		$_SESSION['password'] = $newpassword;
+	}
+
 	public function isLoggedIn() {
 		if (empty($_SESSION['username'])) {
 			return false;

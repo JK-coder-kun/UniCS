@@ -1,16 +1,19 @@
 <?php
+
 namespace Common;
 
 use Exception;
 
-class DatabaseTable {
+class DatabaseTable
+{
 	private $pdo;
 	private $table;
 	private $primaryKey;
 	private $className;
 	private $constructorArgs;
 
-	public function __construct(\PDO $pdo, string $table, string $primaryKey, string $className = '\stdClass', array $constructorArgs = []) {
+	public function __construct(\PDO $pdo, string $table, string $primaryKey, string $className = '\stdClass', array $constructorArgs = [])
+	{
 		$this->pdo = $pdo;
 		$this->table = $table;
 		$this->primaryKey = $primaryKey;
@@ -18,42 +21,46 @@ class DatabaseTable {
 		$this->constructorArgs = $constructorArgs;
 	}
 
-	public function getDatabase(){
+	public function getDatabase()
+	{
 		return $this->pdo;
 	}
 
-	private function query($sql, $parameters = []) {
-		try{
+	private function query($sql, $parameters = [])
+	{
+		try {
 			$query = $this->pdo->prepare($sql);
 			//echo $sql."</br>";print_r($parameters);
 			$query->execute($parameters);
 			return $query;
-		}catch(Exception $e){
-			echo "</br>".$e->getMessage()."</br>In ".$e->getFile()."</br>";
+		} catch (Exception $e) {
+			echo "</br>" . $e->getMessage() . "</br>In " . $e->getFile() . "</br>";
 		}
-	}	
+	}
 
-	public function total($fields = null) {
+	public function total($fields = null)
+	{
 		$sql = 'SELECT COUNT(*) FROM `' . $this->table . '`';
 		$parameters = [];
 
 		if (!empty($fields)) {
-			$sql.=' WHERE';
-			foreach($fields as $key=>$value){
-				$sql .=' `' . $key . '` = :' . $key . ' AND';
+			$sql .= ' WHERE';
+			foreach ($fields as $key => $value) {
+				$sql .= ' `' . $key . '` = :' . $key . ' AND';
 			}
 			// $sql .= ' WHERE `' . $field . '` = :value';
 			// $parameters = ['value' => $value];
-			$parameters=$fields;
+			$parameters = $fields;
 		}
-		$sql=rtrim($sql,'AND');
-		
+		$sql = rtrim($sql, 'AND');
+
 		$query = $this->query($sql, $parameters);
 		$row = $query->fetch();
 		return $row[0];
 	}
 
-	public function findById($value) {
+	public function findById($value)
+	{
 		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :value';
 
 		$parameters = [
@@ -65,13 +72,14 @@ class DatabaseTable {
 		return $query->fetchObject($this->className, $this->constructorArgs);
 	}
 
-	public function findByThreeColumn($column1,$value1,$column2,$value2,$column3,$value3,$orderBy=null,$limit=null,$offset=null){
-		$query= 'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND '. 
-		$column2. ' = :value2 AND '.$column3.' = :value3';
+	public function findByThreeColumn($column1, $value1, $column2, $value2, $column3, $value3, $orderBy = null, $limit = null, $offset = null)
+	{
+		$query = 'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND ' .
+			$column2 . ' = :value2 AND ' . $column3 . ' = :value3';
 		$parameters = [
-			'value1'=> $value1,
-			'value2'=> $value2,
-			'value3'=> $value3
+			'value1' => $value1,
+			'value2' => $value2,
+			'value3' => $value3
 		];
 
 		if ($orderBy != null) {
@@ -90,16 +98,16 @@ class DatabaseTable {
 		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
-	public function findMultiColumn($fields,$orderBy = null, $limit = null, $offset = null){
-		$query=	'SELECT * FROM ' . $this->table . ' WHERE ';
+	public function findMultiColumn($fields, $orderBy = null, $limit = null, $offset = null)
+	{
+		$query =	'SELECT * FROM ' . $this->table . ' WHERE ';
 		foreach ($fields as $key => $value) {
-			if($key=='roomNo' || $key=='subjectCode'){
-				$fields[$key]=$value."%";
-				$query.= ' `' . $key . '` LIKE :'.$key.' AND';
-			}else{
-				$query .= ' `' . $key . '`= :'.$key.' AND';
+			if ($key == 'roomNo' || $key == 'subjectCode' || $key == 'email') {
+				$fields[$key] = $value . "%";
+				$query .= ' `' . $key . '` LIKE :' . $key . ' AND';
+			} else {
+				$query .= ' `' . $key . '`= :' . $key . ' AND';
 			}
-			
 		}
 
 		$query = rtrim($query, 'AND');
@@ -120,13 +128,14 @@ class DatabaseTable {
 		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
-	public function findByTwoColumn($column1,$value1,$column2,$value2,$orderBy = null, $limit = null, $offset = null){
-		$query=	'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND '. 
-				$column2. ' = :value2';
-		
+	public function findByTwoColumn($column1, $value1, $column2, $value2, $orderBy = null, $limit = null, $offset = null)
+	{
+		$query =	'SELECT * FROM ' . $this->table . ' WHERE ' . $column1 . ' = :value1 AND ' .
+			$column2 . ' = :value2';
+
 		$parameters = [
-			'value1'=> $value1,
-			'value2'=> $value2
+			'value1' => $value1,
+			'value2' => $value2
 		];
 
 		if ($orderBy != null) {
@@ -144,7 +153,8 @@ class DatabaseTable {
 
 		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
-	public function find($column, $value, $orderBy = null, $limit = null, $offset = null) {
+	public function find($column, $value, $orderBy = null, $limit = null, $offset = null)
+	{
 		$query = 'SELECT * FROM ' . $this->table . ' WHERE ' . $column . ' = :value';
 
 		$parameters = [
@@ -168,7 +178,8 @@ class DatabaseTable {
 		return $query->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
-	private function insert($fields) {
+	private function insert($fields)
+	{
 		$query = 'INSERT INTO `' . $this->table . '` (';
 
 		foreach ($fields as $key => $value) {
@@ -196,8 +207,9 @@ class DatabaseTable {
 	}
 
 
-	public function update($fields) {
-		$query = ' UPDATE `' . $this->table .'` SET ';
+	public function update($fields)
+	{
+		$query = ' UPDATE `' . $this->table . '` SET ';
 
 		foreach ($fields as $key => $value) {
 			$query .= '`' . $key . '` = :' . $key . ',';
@@ -216,13 +228,15 @@ class DatabaseTable {
 	}
 
 
-	public function delete($id) {
+	public function delete($id)
+	{
 		$parameters = [':id' => $id];
 
 		$this->query('DELETE FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :id', $parameters);
 	}
 
-	public function deleteWhere($column, $value) {
+	public function deleteWhere($column, $value)
+	{
 		$query = 'DELETE FROM ' . $this->table . ' WHERE ' . $column . ' = :value';
 
 		$parameters = [
@@ -232,15 +246,17 @@ class DatabaseTable {
 		$query = $this->query($query, $parameters);
 	}
 
-	public function findRoomSchedule($roomNo,$day,$tableName){
-		$parameters=['roomNo'=>$roomNo,'day'=>$day];
+	public function findRoomSchedule($roomNo, $day, $tableName)
+	{
+		$parameters = ['roomNo' => $roomNo, 'day' => $day];
 
-		$query='SELECT * FROM '.$this->table.' WHERE `roomNo`=:roomNo AND `day`=:day';
-		$result=$this->query($query,$parameters);
+		$query = 'SELECT * FROM ' . $this->table . ' WHERE `roomNo`=:roomNo AND `day`=:day';
+		$result = $this->query($query, $parameters);
 		return $result->fetchAll();
 	}
 
-	public function findAll($orderBy = null, $limit = null, $offset = null) {
+	public function findAll($orderBy = null, $limit = null, $offset = null)
+	{
 		$query = 'SELECT * FROM ' . $this->table;
 
 		if ($orderBy != null) {
@@ -260,12 +276,13 @@ class DatabaseTable {
 		return $result->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
-	public function findOccupiedRooms($day,$period,$orderBy=null,$limit=null,$offset=null){
-		$query=	'SELECT roomNo FROM ' . $this->table . ' WHERE day = :day AND period = :period';
-		
+	public function findOccupiedRooms($day, $period, $orderBy = null, $limit = null, $offset = null)
+	{
+		$query =	'SELECT roomNo FROM ' . $this->table . ' WHERE day = :day AND period = :period';
+
 		$parameters = [
-			'day'=> $day,
-			'period'=> $period
+			'day' => $day,
+			'period' => $period
 		];
 
 		if ($orderBy != null) {
@@ -280,11 +297,12 @@ class DatabaseTable {
 			$query .= ' OFFSET ' . $offset;
 		}
 		$query = $this->query($query, $parameters);
-		$result=$query->fetchAll(\PDO::FETCH_ASSOC);
+		$result = $query->fetchAll(\PDO::FETCH_ASSOC);
 		return $result;
 	}
 
-	private function processDates($fields) {
+	private function processDates($fields)
+	{
 		foreach ($fields as $key => $value) {
 			if ($value instanceof \DateTime) {
 				$fields[$key] = $value->format('y-m-d-h-i');
@@ -295,39 +313,47 @@ class DatabaseTable {
 	}
 
 
-	public function save($record) {
+	public function save($record)
+	{
 		$entity = new $this->className(...$this->constructorArgs);
-		
-		try {	
+
+		try {
 			if ($record[$this->primaryKey] == '') {
 				$record[$this->primaryKey] = null;
 			}
 			$insertId = $this->insert($record);
 			$entity->{$this->primaryKey} = $insertId;
-		}
-		catch (\PDOException $e) {
+		} catch (\PDOException $e) {
 			echo $e;
 			$this->update($record);
 		}
 
 		foreach ($record as $key => $value) {
 			if (!empty($value)) {
-				$entity->$key = $value;	
-			}			
+				$entity->$key = $value;
+			}
 		}
 
-		return $entity;	
+		return $entity;
 	}
 
-	public function findRequestByDate($date){
-		$query='SELECT * FROM '.$this->table.' WHERE date >:date';
-		$field=['date'=>$date];
-		$requests=$this->query($query,$field);
+	public function findRequestByDate($date)
+	{
+		$query = 'SELECT * FROM ' . $this->table . ' WHERE date <:date';
+		$field = ['date' => $date];
+		$requests = $this->query($query, $field);
 		return $requests->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 
-	public function deleteApproval($date){
-		$query='DELETE FROM '.$this->table.' WHERE date < :date';
-		$this->query($query,['date'=>$date]);
+	public function deleteApproval($date)
+	{
+		$query = 'DELETE FROM ' . $this->table . ' WHERE date < :date';
+		$this->query($query, ['date' => $date]);
+	}
+
+	public function deleteNotification($date)
+	{
+		$query = 'DELETE FROM ' . $this->table . ' WHERE time < :date';
+		$this->query($query, ['date' => $date]);
 	}
 }

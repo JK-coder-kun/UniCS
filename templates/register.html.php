@@ -8,7 +8,7 @@
 		</ul>
 	</div>
 <?php endif; ?>
-<form action="../admin/register" method="post">
+<form action="register" method="post">
 	<label for="email">Your email address</label>
 	<input name="user[email]" id="email" type="text" value="<?= $user['email'] ?? '' ?>"></br>
 

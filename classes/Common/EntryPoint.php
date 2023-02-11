@@ -41,6 +41,7 @@ class EntryPoint {
 		try{
 			$requestOperator->checkRequests();	
 			$requestOperator->deleteApproval();
+			$requestOperator->deleteNotification();
 		}catch(Exception $e){
 			echo $e;
 		}

@@ -15,7 +15,7 @@ class Register
 
 	public function registerationForm()
 	{
-		echo "registerationForm";
+
 		return [
 			'template' => 'register.html.php',
 			'title' => 'Register an account'
@@ -94,36 +94,47 @@ class Register
 		}
 	}
 
-	public function changeInfo(){
-		if(isset($_POST['user'])){
-			$user=$_POST['user'];
+	
+
+	public function changeInfo()
+	{
+		if (isset($_POST['user'])) {
+			$user = $_POST['user'];
 			$this->userTable->update($user);
 			header('Location:listuser');
-		}else{
+		} else {
 			header('Location:listuser');
 		}
 	}
 
-	public function resetPassword(){
-		if(isset($_POST['id'])){
-			$id=$_POST['id'];
-			$password=password_hash('uniscdefault@', PASSWORD_DEFAULT);
-			$this->userTable->update(['id'=>$id,'password'=>$password]);
+	public function resetPassword()
+	{
+		if (isset($_POST['id'])) {
+			$id = $_POST['id'];
+			$password = password_hash('unicsdefault@', PASSWORD_DEFAULT);
+			$this->userTable->update(['id' => $id, 'password' => $password]);
 			header('Location:listuser');
-		}else{
+		} else {
 			header('Location:listuser');
 		}
 	}
 
 	public function list()
 	{
-		$users = $this->userTable->findAll();
+		if (isset($_GET['search']) && $_GET['search'] != '') {
+			$search = $_GET['search'];
+			$users = $this->userTable->findMultiColumn(['email' => $search], 'permissions DESC');
+		} else {
+			$users = $this->userTable->findAll();
+		}
+
 
 		return [
 			'template' => 'userlist.html.php',
 			'title' => 'User List',
 			'variables' => [
-				'users' => $users
+				'users' => $users,
+				'search' => $search ?? null
 			]
 		];
 	}

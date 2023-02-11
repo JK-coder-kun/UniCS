@@ -17,13 +17,13 @@ class Routes{
         $this->approvalTable=new \Common\DatabaseTable($pdo,'approval','id');
         $this->requestTable=new \Common\DatabaseTable($pdo,'request','id','\Unics\Entity\Request');
         $this->notificationTable=new \Common\DatabaseTable($pdo,'notification','id');
-        $this->priorityTable=new \Common\DatabaseTable($pdo,'priority','priority');
+        $this->priorityTable=new \Common\DatabaseTable($pdo,'priority','reason');
         $this->authentication=new \Common\Authentication($this->userTable,'email','password','\Unics\Entity\Schedule');
     
     }
     
     public function getRoutes(){
-        $loginController= new \Unics\Controllers\Login($this->authentication);
+        $loginController= new \Unics\Controllers\Login($this->authentication,$this->approvalTable);
         $registerController=new \Unics\Controllers\Register($this->userTable);
         $scheduleController=new \Unics\Controllers\Schedule($this->scheduleTable,$this->approvalTable);
         $requestController=new \Unics\Controllers\Request($this->scheduleTable,$this->requestTable,$this->approvalTable,$this->authentication,$this->priorityTable,$this->notificationTable);
@@ -69,6 +69,13 @@ class Routes{
                     'action'=>'logout'
                 ]
             ],
+            'profile'=>[
+                'GET'=>[
+                    'controller'=>$loginController,
+                    'action'=>'showProfile'
+                ],
+                'login'=>true
+            ],
             'admin/priority'=>[
                 'GET'=>[
                     'controller'=>$adminController,
@@ -113,6 +120,13 @@ class Routes{
                 ],
                 'login'=>true,
                 'permissins'=>\Unics\Entity\User::EDIT_SCHEDULE
+            ],
+            'changepassword'=>[
+                'POST'=>[
+                    'controller'=>$loginController,
+                    'action'=>'changePassword'
+                ],
+                'loigin'=>true
             ],
             'register'=>[
                 'GET'=>[

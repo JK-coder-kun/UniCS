@@ -104,11 +104,17 @@ class Request{
                 }
             }else{
                 date_default_timezone_set('Asia/Yangon');
+                $date=new DateTime();
+                $userid=$this->authentication->getUser()->id;
                 $this->request=$this->requestTable->save(['period'=>$requestForm['period'],
                         'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
-                        'date'=>new DateTime(),'reason'=>$requestForm['reason'],
-                        'userId'=>$this->authentication->getUser()->id]); 
-                header('Location: schedule');   
+                        'date'=>$date,'reason'=>$requestForm['reason'],
+                        'userId'=>$userid]); 
+                $this->notificationTable->save([
+                    'notiText'=>'Your request have been sent, Tomorrow, you will receive checking result',
+                    'time'=>$date,'userid'=>$userid,'status'=>1
+                ]);
+                //header('Location: schedule');   
             }
 
       }else{

@@ -1,3 +1,9 @@
+<form action="listuser" method="get">
+    <input type="text" name="search" id="" value=<?=$search?>>
+    <input type="submit" value="Search">
+</form>
+</br>
+
 <?php foreach ($users as $user) : ?>
     Name:<?= $user->name ?></br>Email:<span><?= $user->email ?></span>
     <form action="changeuserinfo" method="post">

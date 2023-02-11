@@ -104,6 +104,7 @@ class RequestOperator
         return (empty($approvals) && empty($schedules));
     }
 
+
     public function approveRequest($requests)
     {
         foreach ($requests as $request) {
@@ -244,5 +245,9 @@ class RequestOperator
         // $dateFilter='(date<'.date('y-m-d').')';
         // $this->approvalTable->deleteWhere($dateFilter,true);
         $this->approvalTable->deleteApproval(date('y-m-d'));
+    }
+
+    public function deleteNotification(){
+        $this->notificationTable->deleteNotification(date('y-m-d', strtotime("-" . 7 . " days")));
     }
 }

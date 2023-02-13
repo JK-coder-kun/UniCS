@@ -21,7 +21,7 @@ class Login
 	public function processLogin()
 	{
 		if ($this->authentication->login($_POST['email'], $_POST['password'])) {
-			header('location: login/success');
+			header('location: schedule');
 		} else {
 			return [
 				'template' => 'login.html.php',
@@ -125,6 +125,6 @@ class Login
 	{
 		unset($_SESSION);
 		session_destroy();
-		return ['template' => 'logout.html.php', 'title' => 'You have been logged out'];
+		return ['template' => 'login.html.php', 'title' => 'You have been logged out'];
 	}
 }

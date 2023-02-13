@@ -102,10 +102,13 @@ class DatabaseTable
 	{
 		$query =	'SELECT * FROM ' . $this->table . ' WHERE ';
 		foreach ($fields as $key => $value) {
-			if ($key == 'roomNo' || $key == 'subjectCode' || $key == 'email') {
+			if ($key == 'roomNo' || $key == 'subjectCode' ) {
 				$fields[$key] = $value . "%";
 				$query .= ' `' . $key . '` LIKE :' . $key . ' AND';
-			} else {
+			} else if($key == 'email'){
+				$fields[$key] = "%".$value . "%";
+				$query .= ' `' . $key . '` LIKE :' . $key . ' AND';
+			}else{
 				$query .= ' `' . $key . '`= :' . $key . ' AND';
 			}
 		}
@@ -278,7 +281,7 @@ class DatabaseTable
 
 	public function findOccupiedRooms($day, $period, $orderBy = null, $limit = null, $offset = null)
 	{
-		$query =	'SELECT roomNo FROM ' . $this->table . ' WHERE day = :day AND period = :period';
+		$query =	'SELECT * FROM ' . $this->table . ' WHERE day = :day AND period = :period';
 
 		$parameters = [
 			'day' => $day,

@@ -35,7 +35,7 @@ class Schedule{
         foreach($rooms as $key=>$value){
             for($n=0;$n<count($occupiedRooms);$n++){
                 if($occupiedRooms[$n]['roomNo']==$key){
-                    $rooms[$key]=true;
+                    $rooms[$key]=$occupiedRooms[$n];
                 }
             }
         }

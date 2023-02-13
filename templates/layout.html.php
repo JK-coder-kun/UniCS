@@ -11,24 +11,26 @@
     <title><?= $title ?></title>
     <style>
         .carousel-control-prev-icon {
-            /* width:0!important; */
             height: 0 !important;
         }
 
         .carousel-control-next-icon {
-            /* width:0!important; */
             height: 0 !important;
         }
 
-        /* solution to below code */
-        /* https://stackoverflow.com/questions/14243088/in-css-is-there-a-selector-for-referencing-a-specific-input-type-that-also-has-a */
-        input.dummy-form[type='text']::placeholder {
-            text-align: center;
+        .dummy-form-title {
+            border: 0px solid white;
+            border-radius: 0.375em;
             color: white;
+            text-align: center;
+            /* it's bg-dark's color */
+            background-color: #212529;
         }
 
-        .dummy-form {
+        .dummy-form-content {
             border: 0px solid white;
+            text-align: center;
+            color: indigo;
         }
 
         /* footer problem fixed? */
@@ -40,15 +42,15 @@
             justify-content: space-between;
         }
 
-        .form-control {
+        .form-control, .form-select{
             /* color changed to a shade of --bs-border-color: #dee2e6; */
             border-color: #a8b3bd;
         }
     </style>
     <script>
-        function changeStatus(id,userid) {
+        function changeStatus(id, userid) {
             var xhttp = new XMLHttpRequest();
-            var totalNoti=document.getElementById("totalUnread").value;
+            var totalNoti = document.getElementById("totalUnread").value;
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("totalUnread").innerHTML = this.responseText;
@@ -56,7 +58,7 @@
                 }
             };
             //alert("you click noti"+st);
-            xhttp.open("GET", "../templates/changeNotiStatus.php?userId="+userid+"&notiId="+id, true);
+            xhttp.open("GET", "../templates/changeNotiStatus.php?userId=" + userid + "&notiId=" + id, true);
             xhttp.send();
             //document.getElementById("totalNoti").innerHTML = totalNoti;
 
@@ -79,11 +81,23 @@
                     </li>
 
                     <?php if ($loggedIn->permissions >= 4) : ?>
-                        <li class="nav-item">
-                            <a href="/UniCS/public/admin/listschedule" class="nav-link">Edit Schedule</a>
-                            <a href="/UniCS/public/admin/priority" class="nav-link">Priority Order</a>
-                            <a href="/UniCS/public/listuser" class="nav-link">User List</a>
-                            <a href="/UniCS/public/register" class="nav-link">Register User</a>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Admin</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/UniCS/public/admin/listschedule" class="dropdown-item">Edit Schedule</a>
+                                </li>
+                                <li>
+                                    <a href="/UniCS/public/admin/priority" class="dropdown-item">Edit Priority</a>
+                                </li>
+                                <li>
+                                    <a href="/UniCS/public/listuser" class="dropdown-item">User List</a>
+                                </li>
+                                <li>
+                                    <a href="/UniCS/public/register" class="dropdown-item">Register User</a>
+                                </li>
+                            </ul>
+
                         </li>
                     <?php endif; ?>
 
@@ -97,8 +111,8 @@
                                 <span id="totalUnread">
                                     <?php echo $totalUnread; ?>
                                 </span>
-                                
-                                
+
+
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                         </a>
@@ -130,9 +144,9 @@
                 foreach ($notifications as $item) {
             ?>
                     <form method="get">
-                        <li onclick="changeStatus('<?=$item->id;?>','<?=$item->userid;?>')" style="font-size: small;"><?= $item->notiText; ?></br>
+                        <li onclick="changeStatus('<?= $item->id; ?>','<?= $item->userid; ?>')" style="font-size: small;"><?= $item->notiText; ?></br>
                             <!-- send at :<?= $item->time ?> -->
-                            <em>send at <?=$item->time?></em>
+                            <em>send at <?= $item->time ?></em>
                         </li>
                     </form>
 
@@ -146,15 +160,6 @@
         <div class='container-fluid'>
             <?= $output ?>
         </div>
-
-        <!-- for visualization
-    <link rel="stylesheet" href="../bootstrap.css">
-    <link rel="stylesheet" href="../style.css"> -->
-
-
-        <!-- <footer style='position:fixed;bottom:0;width:100%;'> -->
-        <!-- you should remove 'fixed-bottom' if you implement this into a page -->
-
 
         <!-- <footer> -->
         <div class="card text-center">

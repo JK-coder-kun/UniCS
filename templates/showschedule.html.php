@@ -5,6 +5,8 @@
         <?php endfor; ?>
         
     </ul> -->
+    <!-- can be output as $rooms[$roomNo]['section']??'';,$rooms[$roomNo]['subjectCode']??'';,$rooms[$roomNo]['reason']??''; -->
+    <?=print_r($rooms)?>
 <?php
 $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 $periods = [0, "8:30 - 9:30", "9:40 - 10:40", "10:50 - 11:50", "12:40 - 1:40", "1:50 - 2:50", "3:00 - 4:00"];
@@ -40,9 +42,9 @@ $periods = [0, "8:30 - 9:30", "9:40 - 10:40", "10:50 - 11:50", "12:40 - 1:40", "
                         $rm = $j + 1;
                         $roomNo = "2" . $floor . $rm;
                         if (array_key_exists($roomNo, $rooms) && $rooms[$roomNo]) {
-                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "' class='btn btn-primary btn-lg room room-taken' role='button'>2" . $floor . $rm . "</a>";
+                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "' class='btn btn-primary btn-lg room room-taken' role='button'>" . $roomNo. "</a>";
                         } else {
-                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-primary btn-lg room room-free' role='button'>2" . $floor . $rm . "</a>";
+                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-primary btn-lg room room-free' role='button'>" . $roomNo . "</a>";
                         }
                     }
                     echo "<br>";
@@ -59,9 +61,9 @@ $periods = [0, "8:30 - 9:30", "9:40 - 10:40", "10:50 - 11:50", "12:40 - 1:40", "
                         $rm = $j + 1;
                         $roomNo = "3" . $floor . $rm;
                         if (array_key_exists($roomNo, $rooms) && $rooms[$roomNo]) {
-                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "' class='btn btn-primary btn-lg room room-taken' role='button'>3" . $floor . $rm . "</a>";
+                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "' class='btn btn-primary btn-lg room room-taken' role='button'>" . $roomNo. "</a>";
                         } else {
-                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-primary btn-lg room room-free' role='button'>3" . $floor . $rm . "</a>";
+                            echo "<a href='/UniCS/public/request?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-primary btn-lg room room-free' role='button'>" . $roomNo. "</a>";
                         }
                     }
                     echo "<br>";

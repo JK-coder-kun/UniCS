@@ -83,7 +83,7 @@ class Admin
             'title' => $title,
             'variables' => [
                 'result' => $result,
-                'filter' => $filter
+                'filter' => $filter??[]
             ]
         ];
     }

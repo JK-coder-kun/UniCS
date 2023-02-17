@@ -24,12 +24,12 @@ if ($filter) {
                 $postFilter .= "<input type=\"hidden\" name=\"filter[" . $key . "]\" value=\"" . $value . "\">";
             } ?> -->
 
-    <h4>Edit Schedule</h4>
+    <h4>Schedules</h4>
     <hr>
 
     <div class="container-fluid">
 
-        <form action="/UniCS/public/admin/listschedule" method="get" class='row g-2'>
+        <form action="/UniCS/public/searchschedule" method="get" class='row g-2'>
             <label class='visually-hidden' for="filter[roomNo]">RoomNo</label>
             <span class='col-sm-2'>
                 <input type="number" name="filter[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?>>
@@ -60,16 +60,15 @@ if ($filter) {
             </span>
 
             <span class="col-sm-auto">
-                <a class='btn btn-primary' href="/UniCS/public/admin/listschedule">All</a>
+                <a class='btn btn-primary' href="/UniCS/public/searchschedule">All</a>
             </span>
         </form>
 
         <!-- <hr> -->
         <br>
 
-        <!-- <div class="container-fluid p-4" style='background-color:#66ffb3;border-radius:20px;'> -->
-            <div class="container-fluid p-4" style='background-color:lightgoldenrodyellow;border-radius:20px;'>
-            <!-- <div class="container-fluid p-4"> -->
+        <!-- <div class="container-fluid p-4" style='background-color:#66ffb3'> -->
+            <div class="container-fluid p-4" style='background-color:lightgoldenrodyellow;'>
             <div class="row mb-3 gx-1">
                 <span class="col-11">
                     <form action="" class="row">
@@ -115,19 +114,11 @@ if ($filter) {
                             <span class='col-sm-2'>
                                 <input type="number" name="schedule[subjectCode]" id="" class='form-control' value=<?= $row->subjectCode ?>>
                             </span>
-                            <span class='col-sm-2'>
-                                <input type="submit" class='form-control btn btn-primary' value="Edit">
-                            </span>
+                           
                         </form>
                     </span>
 
-                    <span class='col-1'>
-                        <form action="/UniCS/public/admin/deleteschedule" method="post">
-                            <input type="hidden" name="id" value=<?= $row->id ?>>
-                            <?= $postFilter ?>
-                            <input class='btn btn-danger' type="submit" value="Delete">
-                        </form>
-                    </span>
+                   
                 </div>
 
 
@@ -136,30 +127,7 @@ if ($filter) {
 
 
         <!-- <hr> -->
-        <br>
-
-        <form action="/UniCS/public/admin/addschedule" method="post" class='row g-2'>
-            <?= $postFilter ?>
-            <span class='col-sm-2'>
-                <input type="number" name="schedule[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?> required>
-            </span>
-            <span class='col-sm-2'>
-                <input type="number" name="schedule[period]" id="" class='form-control' placeholder='Period' value=<?= $filter['period'] ?? '' ?> required>
-            </span>
-            <span class='col-sm-auto'>
-                <input type="text" name="schedule[day]" id="" class='form-control' placeholder='Day' value=<?= $filter['day'] ?? '' ?>>
-            </span>
-            <span class='col-sm-2'>
-                <input type="text" name="schedule[section]" id="" class='form-control' placeholder='Section' value=<?= $filter['section'] ?? '' ?>>
-            </span>
-            <span class='col-sm-2'>
-                <input type="number" name="schedule[subjectCode]" id="" class='form-control' placeholder='Subject Code' value=<?= $filter['subjectCode'] ?? '' ?>>
-            </span>
-            <span class='col-sm-auto'>
-                <input class='btn btn-primary' type="submit" value="Add">
-            </span>
-
-        </form>
+       
     </div>
 
 </div>

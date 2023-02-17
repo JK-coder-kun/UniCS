@@ -27,7 +27,7 @@
 				</span>
 			</div>
 			<div class="row mb-3">
-				<label for="name" class='col-sm-2 col-form-label'>Your name</label>
+				<label for="name" class='col-sm-2 col-form-label'>Username</label>
 				<span class="col-sm-auto">
 					<input name="user[name]" id="name" type="text" class='form-control' value="<?= $user['name'] ?? '' ?>">
 				</span>

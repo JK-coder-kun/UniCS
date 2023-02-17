@@ -43,7 +43,7 @@ class Request{
                     $roomSchedules['thursday']=array_merge($roomSchedules['thursday'], $this->approvalTable->findRoomSchedule($roomNo,'thursday','schedule'));
                     $roomSchedules['friday']=array_merge($roomSchedules['friday'], $this->approvalTable->findRoomSchedule($roomNo,'friday','schedule'));
                     $priority=$this->priorityTable->findAll('priority DESC');
-
+            $user=$this->authentication->getUser();
             $title='Request Room';
             return [
                 'template'=>'requestRoom.html.php',
@@ -52,6 +52,7 @@ class Request{
                     'roomSchedules'=>$roomSchedules,
                     'roomNo'=>$roomNo,
                     'priority'=>$priority,
+                    'user'=>$user,
                     'period'=>$_GET['period']??null,
                     'day'=>$_GET['day']??null
                 ]
@@ -62,7 +63,8 @@ class Request{
     }
     public function sendRequest(){
         $requestForm=$_POST['request'];
-        $requestForm['userId']=$this->authentication->getUser()->id;
+        $user=$this->authentication->getUser();
+        $requestForm['userId']=$user->id;
         $this->request=new \Unics\Entity\Request($requestForm);
         $requestOperator=new \Unics\Controllers\RequestOperator($this->scheduleTable,
                                                                 $this->approvalTable,
@@ -98,7 +100,8 @@ class Request{
                             'roomSchedules'=>$roomSchedules,
                             'roomNo'=>$roomNo,
                             'priority'=>$priority,
-                            'error'=>$error
+                            'error'=>$error,
+                            'user'=>$user
                         ]
                     ];
                 }
@@ -110,11 +113,12 @@ class Request{
                         'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
                         'date'=>$date,'reason'=>$requestForm['reason'],
                         'userId'=>$userid]); 
+                $notiText='Your request have been sent!</br>RoomNo:'.$requestForm['roomNo'].', '.$requestForm['day'].', period'.$requestForm['period'].'</br>Tomorrow, you will receive checking result';
                 $this->notificationTable->save([
-                    'notiText'=>'Your request have been sent, Tomorrow, you will receive checking result',
+                    'notiText'=>$notiText,
                     'time'=>$date,'userid'=>$userid,'status'=>1
                 ]);
-                //header('Location: schedule');   
+                header('Location: schedule');   
             }
 
       }else{
@@ -139,6 +143,7 @@ class Request{
                     'roomSchedules'=>$roomSchedules,
                     'priority'=>$priority,
                     'roomNo'=>$roomNo,
+                    'user'=>$user,
                     'error'=>$error
                 ]
             ];

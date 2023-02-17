@@ -77,7 +77,8 @@ class RequestOperator
                 $currentPeriod = 6;
                 break;
         }
-        if ($this->request->period < $currentPeriod) {
+        
+        if ($this->request->period <= $currentPeriod) {
             return false;
         }
         $this->approveRequest([$this->request]);
@@ -109,7 +110,7 @@ class RequestOperator
     {
         foreach ($requests as $request) {
             $this->requestTable->deleteWhere('id', $request->id);
-            echo "</br>reqesteddate=".$this->dateArray[$request->day]."</br>";
+           // echo "</br>reqesteddate=".$this->dateArray[$request->day]."</br>";
             $requestArray = [
                 'roomNo' => $request->roomNo,
                 'day' => $request->day,
@@ -149,7 +150,7 @@ class RequestOperator
     public function sendRejection($rejections)
     {
         foreach ($rejections as $rejection) {
-            $notiText = "Your request has been rejected!\nFor room No:" . $rejection->roomNo
+            $notiText = "Your request has been rejected!</br>For room No:" . $rejection->roomNo
                 . "\nAt :" . $rejection->day . ", period " . $rejection->period;
             $notiInfo = [
                 'userId' => $rejection->userId, 'status' => 1, 'time' => new DateTime(),
@@ -163,8 +164,8 @@ class RequestOperator
 
     public function compareRequests($requests)
     {
-        echo "</br>in compareRequests</br>";
-        $priorityObjs = $this->priorityTable->findAll('priority');
+        //echo "</br>in compareRequests</br>";
+        $priorityObjs = $this->priorityTable->findAll('priority DESC');
         foreach ($priorityObjs as $priorityObj) {
             $priority[$priorityObj->reason] = $priorityObj->priority;
         }
@@ -176,22 +177,20 @@ class RequestOperator
             //print_r($user);
             if ($user->role == 'admin') {
                 $chosenReq = $request;
-            } else if ($priority[$request->reason] == sizeof($priority)) {
-                $chosenReq = $request;
-            } else if ($priority[$request->reason] > $priority[$chosenReq->reason]) {
+            }else if ($priority[$request->reason] > $priority[$chosenReq->reason]) {
                 $chosenReq = $request;
             } else if ($priority[$request->reason] == $priority[$chosenReq->reason]) {
                 if ($request->date < $chosenReq->date) {
                     $chosenReq = $request;
                 }
             }
-            echo "Chosenrequest is ";
-            print_r($chosenReq);echo '</br>';
+            // echo "Chosenrequest is ";
+            // print_r($chosenReq);echo '</br>';
         }
-        echo "</br>rejections";
+        //echo "</br>rejections";
         $chosenIndex = array_search($chosenReq, $requests);
         array_splice($requests, $chosenIndex, 1);
-        echo "rejected request are";print_r($requests);echo "</br>";
+        //echo "rejected request are";print_r($requests);echo "</br>";
         $this->rejectRequest($requests);
         return $chosenReq;
     }
@@ -206,7 +205,7 @@ class RequestOperator
         if ($requestToCheck == null) {
             return true;
         } else {
-            echo "there exisit request </br>";
+            //echo "there exisit request </br>";
             $size = sizeof($requestToCheck);
             $conflicts = array();
             for ($a = 0; $a < $size; $a++) {
@@ -232,8 +231,8 @@ class RequestOperator
                         $a++;
                     }
                 }
-                echo ($isThereConflict) ? "conflict has" : "conflict don't have";
-                print_r($conflicts);
+                // echo ($isThereConflict) ? "conflict has" : "conflict don't have";
+                // print_r($conflicts);
                 $requestsToApprove[] = $isThereConflict ? $this->compareRequests($conflicts) : $requestToCheck[$a];
             }
 

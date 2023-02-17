@@ -56,8 +56,7 @@
             </tbody>
         </table>
     </div>
-
-    <div class='container'>
+    <div class='container' style="display:<?=($user->permissions>=1)?'':'none;'?>">
         <form action="request" method="post">
             <fieldset>
                 <legend>Request Room</legend>
@@ -85,17 +84,12 @@
                     <label class='col-1 col-form-label' for="request[reason]">Reason</label>
                     <span class="col-auto">
                         <select class="form-select" name="request[reason]">
-                            <!-- <option selected>Choose Reason</option> -->
                             <?php foreach($priority as $reason):?>
                                 <option value="<?=$reason->reason?>"><?=ucfirst($reason->reason)?></option>
                             <?php endforeach;?>
-                            <!-- <option value="seminar">Seminar</option>
-                            <option value="club activity">Club Activity</option> -->
                         </select>
                     </span>
-                    <!-- Lecture:<input type="radio" name="request[reason]" id="request" value="lecture">
-                    Seminer:<input type="radio" name="request[reason]" id="request" value="seminer">
-                    Club activity<input type="radio" name="request[reason]" id="request" value="club activity"> -->
+                    
                 </div>
                 <div class="row mb-2">
                     <span class='col-auto'>

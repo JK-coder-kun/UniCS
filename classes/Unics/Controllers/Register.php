@@ -80,7 +80,7 @@ class Register
 
 			$this->userTable->save($user);
 
-			header('Location: register/success');
+			header('Location: listuser?search='.$user['email']);
 		} else {
 			//If the data is not valid, show the form again
 			return [

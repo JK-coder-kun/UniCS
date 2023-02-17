@@ -121,6 +121,13 @@ class Routes{
                 'login'=>true,
                 'permissins'=>\Unics\Entity\User::EDIT_SCHEDULE
             ],
+            'searchschedule'=>[
+                'GET'=>[
+                    'controller'=>$scheduleController,
+                    'action'=>'searchSchedule'
+                ],
+                'login'=>true
+            ],
             'changepassword'=>[
                 'POST'=>[
                     'controller'=>$loginController,
@@ -186,6 +193,13 @@ class Routes{
                 'GET'=>[
                     'controller'=>$scheduleController,
                     'action'=>'showSchedule'
+                ],
+                'login'=>true
+            ],
+            'room'=>[
+                'GET'=>[
+                    'controller'=>$requestController,
+                    'action'=>'showRoomSchedule'
                 ],
                 'login'=>true
             ],

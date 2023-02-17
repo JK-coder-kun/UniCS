@@ -308,7 +308,7 @@ class DatabaseTable
 	{
 		foreach ($fields as $key => $value) {
 			if ($value instanceof \DateTime) {
-				$fields[$key] = $value->format('y-m-d-h-i');
+				$fields[$key] = $value->format('y-m-d-h-i-s');
 			}
 		}
 
@@ -342,7 +342,7 @@ class DatabaseTable
 
 	public function findRequestByDate($date)
 	{
-		$query = 'SELECT * FROM ' . $this->table . ' WHERE date <:date';
+		$query = 'SELECT * FROM ' . $this->table . ' WHERE date >:date';
 		$field = ['date' => $date];
 		$requests = $this->query($query, $field);
 		return $requests->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);

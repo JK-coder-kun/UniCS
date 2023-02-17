@@ -42,9 +42,18 @@
             justify-content: space-between;
         }
 
-        .form-control, .form-select{
+        .form-control,
+        .form-select {
             /* color changed to a shade of --bs-border-color: #dee2e6; */
             border-color: #a8b3bd;
+        }
+
+        .room-denied {
+            background: #000;
+            opacity:0.8;
+        }
+        .room-denied > a{
+            font-weight:lighter;
         }
     </style>
     <script>
@@ -98,6 +107,10 @@
                                 </li>
                             </ul>
 
+                        </li>
+                    <?php else : ?>
+                        <li class="nav-item dropdown">
+                            <a href="/UniCS/public/searchschedule" class="nav-link " role="button">Search Schedule</a>
                         </li>
                     <?php endif; ?>
 

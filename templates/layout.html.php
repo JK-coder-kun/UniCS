@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
     <meta charset="utf-8">
     <!-- js file for carousel -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
@@ -10,6 +11,26 @@
     <link rel="stylesheet" href="/UniCS/templates/style.css">
     <title><?= $title ?></title>
     <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .unselectable {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         .carousel-control-prev-icon {
             height: 0 !important;
         }
@@ -33,6 +54,19 @@
             color: indigo;
         }
 
+        .dummy-form-input-group {
+            text-align: center;
+            color: indigo;
+            border-color: #dee2e6 !important;
+            background-color: #f2f2f2 !important;
+        }
+
+        .input-group-text-dark {
+            background-color: #212529;
+            color: #f2f2f2;
+            border-color: #212529;
+        }
+
         /* footer problem fixed? */
         /* https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-of-page-when-content-is-short-or-missing */
         .flex-wrapper {
@@ -50,10 +84,48 @@
 
         .room-denied {
             background: #000;
-            opacity:0.8;
+            opacity: 0.8;
         }
-        .room-denied > a{
-            font-weight:lighter;
+
+        .room-free:hover {
+            background-color: #e1e6ea;
+            border: 1px solid #6666ff;
+        }
+
+        .room-free {
+            border: 1px solid #6666ff !important;
+        }
+
+        .room-taken {
+            background-color: #ff3333;
+        }
+
+        .room-taken:hover {
+            background-color: #ff4d4d;
+            opacity: 0.9;
+        }
+
+        .room {
+            width: 100px;
+            height: 50px;
+            border-radius: 10px;
+            border: 0px;
+            margin: 15px;
+        }
+
+
+
+        .th-top-left-dark {
+            /* top right bottom left */
+            border-color: #212529 #f8f9fa #212529 #212529;
+        }
+
+        .th-top-right-dark {
+            border-color: #212529 #212529 #212529 #f8f9fa;
+        }
+
+        .th-rl-light {
+            border-color: #212529 #f8f9fa #212529 #f8f9fa;
         }
     </style>
     <script>
@@ -63,23 +135,43 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("totalUnread").innerHTML = this.responseText;
-                    // document.getElementById("noti").innerHTML = '<span class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger"><span id="totalUnread"><?php echo $totalUnread; ?></span><span class="visually-hidden">unread messages</span></span>';
+                    document.getElementById(id).style.backgroundColor = "white";
+                    var element = document.getElementById('redBellThing');
+                    if (this.responseText == 0) {
+                        element.classList.add("visually-hidden");
+                    }
                 }
             };
             //alert("you click noti"+st);
             xhttp.open("GET", "../templates/changeNotiStatus.php?userId=" + userid + "&notiId=" + id, true);
             xhttp.send();
             //document.getElementById("totalNoti").innerHTML = totalNoti;
-
         }
     </script>
+
 </head>
+
+<?php
+function notiCount($notifications)
+{
+    $count = 0;
+    foreach ($notifications as $noti) {
+        if ($noti->status == 1) {
+            $count++;
+        }
+    }
+    return $count;
+}
+?>
 
 <body>
     <div id="demo"></div>
     <nav class="navbar bg-primary navbar-dark navbar-expand-md sticky-top">
         <div class="container-fluid">
             <a href="#" class="navbar-brand" id="navbar-brand">U<span style="color:#FF6A00;">ni</span>CS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="navbar-collapse collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav" id="navbar-ul">
                     <li class="nav-item">
@@ -120,12 +212,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
                             </svg>
-                            <span class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger">
+                            <span id="redBellThing" class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger <?php echo notiCount($notifications)==0 ? 'visually-hidden' : ''; ?>">
                                 <span id="totalUnread">
                                     <?php echo $totalUnread; ?>
                                 </span>
-
-
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                         </a>
@@ -152,20 +242,25 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <?php
-            if (sizeof($notifications) > 0) {
-                foreach ($notifications as $item) {
-            ?>
-                    <form method="get">
-                        <li onclick="changeStatus('<?= $item->id; ?>','<?= $item->userid; ?>')" style="font-size: small;"><?= $item->notiText; ?></br>
-                            <!-- send at :<?= $item->time ?> -->
-                            <em>send at <?= $item->time ?></em>
-                        </li>
-                    </form>
+            <table class='table table-bordered border-dark'>
+                <?php
+                if (sizeof($notifications) > 0) {
+                    foreach ($notifications as $item) {
+                ?>
+                        <form method="get">
+                            <tr class='border-top-0'>
 
-                    <hr>
-            <?php }
-            } ?>
+                                <td id="<?= $item->id ?>" class='border-start-0 border-end-0' onclick="changeStatus('<?= $item->id; ?>','<?= $item->userid; ?>')" style="font-size: small;<?php echo $item->status == 1 ? 'background-color:#e1e6ea' : '' ?> ">
+                                    <?= $item->notiText; ?>
+                                    <br>
+                                    <em>Send at <?= $item->time; ?></em>
+                                </td>
+
+                            </tr>
+                        </form>
+                <?php }
+                } ?>
+            </table>
         </div>
     </div>
 
@@ -175,11 +270,11 @@
         </div>
 
         <!-- <footer> -->
-        <div class="card text-center">
+        <div class="card text-center" style='border-radius:0'>
             <div class="card-footer text-muted">
                 made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                </svg> by <span style='color:red'>uniCS</span> team
+                </svg> by <span style='color:red'>UniCS</span> team
             </div>
         </div>
         <!-- </footer> -->

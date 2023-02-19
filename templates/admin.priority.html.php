@@ -1,9 +1,6 @@
 <div class="mt-3 mb-3 p-3">
-
     <h4>Edit Priority</h4>
-
     <hr>
-    <?= $error ?? '' ?>
     <!-- </br> -->
     <div class="container-fluid">
         <form action="/UniCS/public/admin/priority" method="post">
@@ -19,8 +16,8 @@
             <?php endforeach; ?>
             <input class='btn btn-primary' type='submit' value='Change Priority'>
         </form>
+        <span style='color:red'><?= $error ?? '' ?></span>
     </div>
-
 </div>
 
 <div class="data-mdb-sortable">

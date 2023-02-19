@@ -14,7 +14,7 @@
         </br>
 
         <!-- background-color:#66ffb3 -->
-        <div class="container-fluid p-4" style="background-color:lightgoldenrodyellow;">
+        <div class="container-fluid p-4" style="background-color:lightgoldenrodyellow;border-radius:20px;">
             <div>
                 <div class="row gx-1">
                     <span class='col-10'>
@@ -63,14 +63,14 @@
                                     </select>
                                 </span>
                                 <span class="col-sm-2">
-                                    <input type="submit" class="form-control btn btn-primary" value="Edit Info">
+                                    <input type="submit" class="form-control btn btn-primary" style='border:0' value="Edit Info">
                                 </span>
                             </form>
                         </span>
                         <span class="col-2">
                             <form action="resetpassword" method="post">
                                 <input type="hidden" name="id" value="<?= $user->id ?>">
-                                <input type="submit" class='form-control btn btn-secondary' value="Reset Password">
+                                <input type="submit" class='form-control btn btn-secondary' style='border:0' value="Reset Password">
                             </form>
                         </span>
                     </div>

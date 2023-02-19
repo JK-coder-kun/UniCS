@@ -28,30 +28,55 @@ if ($filter) {
     <hr>
 
     <div class="container-fluid">
-
-        <form action="/UniCS/public/searchschedule" method="get" class='row g-2'>
+        <form action="/UniCS/public/searchschedule" method="get" class='row g-2 justify-content-center'>
             <label class='visually-hidden' for="filter[roomNo]">RoomNo</label>
-            <span class='col-sm-2'>
+            <span class='col-sm-auto'>
                 <input type="number" name="filter[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?>>
             </span>
 
             <label class='visually-hidden' for="filter[period]">Period</label>
-            <span class='col-sm-2'>
-                <input type="number" name="filter[period]" id="" class='form-control' placeholder='Period' value=<?= $filter['period'] ?? '' ?>>
+            <span class='col-sm-auto'>
+                <!-- <input type="number" name="filter[period]" id="" class='form-control' placeholder='Period' value=<?= $filter['period'] ?? '' ?>> -->
+                <select class='form-select' name='filter[period]'>
+                    <option selected name='filter[period]' value="">Period</option>
+                    <option name='filter[period]' value="1" <?= ($filter['period'] == '1') ? 'selected' : '' ?>>1</option>
+                    <option name='filter[period]' value="2" <?= ($filter['period'] == '2') ? 'selected' : '' ?>>2</option>
+                    <option name='filter[period]' value="3" <?= ($filter['period'] == '3') ? 'selected' : '' ?>>3</option>
+                    <option name='filter[period]' value="4" <?= ($filter['period'] == '4') ? 'selected' : '' ?>>4</option>
+                    <option name='filter[period]' value="5" <?= ($filter['period'] == '5') ? 'selected' : '' ?>>5</option>
+                    <option name='filter[period]' value="6" <?= ($filter['period'] == '6') ? 'selected' : '' ?>>6</option>
+                </select>
             </span>
 
             <label class='visually-hidden' for="filter[day]">Day</label>
             <span class='col-sm-auto'>
-                <input type="text" name="filter[day]" id="" class='form-control' placeholder='Day' value=<?= $filter['day'] ?? '' ?>>
+                <!-- <input type="text" name="filter[day]" id="" class='form-control' placeholder='Day' value=<?= $filter['day'] ?? '' ?>> -->
+                <select name="filter[day]" class="form-select">
+                    <option selected value="">Day</option>
+                    <option value="monday" <?= ($filter['day'] == 'monday') ? 'selected' : '' ?>>Monday</option>
+                    <option value="tuesday" <?= ($filter['day'] == 'tuesday') ? 'selected' : '' ?>>Tuesday</option>
+                    <option value="wednesday" <?= ($filter['day'] == 'wednesday') ? 'selected' : '' ?>>Wednesday</option>
+                    <option value="thursday" <?= ($filter['day'] == 'thursday') ? 'selected' : '' ?>>Thursday</option>
+                    <option value="friday" <?= ($filter['day'] == 'friday') ? 'selected' : '' ?>>Friday</option>
+                </select>
             </span>
 
             <label class='visually-hidden' for="filter[section]">Section</label>
-            <span class='col-sm-2'>
-                <input type="text" name="filter[section]" id="" class='form-control' placeholder='Section' value=<?= $filter['section'] ?? '' ?>>
+            <span class='col-sm-auto'>
+                <!-- <input type="text" name="filter[section]" id="" class='form-control' placeholder='Section' value=<?= $filter['section'] ?? '' ?>> -->
+                <select name="filter[section]" class="form-select">
+                    <option selected value="">Section</option>
+                    <option value="a" <?= ($filter['section'] == 'a') ? 'selected' : '' ?>>A</option>
+                    <option value="b" <?= ($filter['section'] == 'b') ? 'selected' : '' ?>>B</option>
+                    <option value="c" <?= ($filter['section'] == 'c') ? 'selected' : '' ?>>C</option>
+                    <option value="d" <?= ($filter['section'] == 'd') ? 'selected' : '' ?>>D</option>
+                    <option value="e" <?= ($filter['section'] == 'e') ? 'selected' : '' ?>>E</option>
+                    <option value="f" <?= ($filter['section'] == 'f') ? 'selected' : '' ?>>F</option>
+                </select>
             </span>
 
             <label class='visually-hidden' for="filter[subjectCode]">subjectCode</label>
-            <span class='col-sm-2'>
+            <span class='col-sm-auto'>
                 <input type="number" name="filter[subjectCode]" id="" class='form-control' placeholder='Subject Code' value=<?= $filter['subjectCode'] ?? '' ?>>
             </span>
 
@@ -64,70 +89,30 @@ if ($filter) {
             </span>
         </form>
 
-        <!-- <hr> -->
+
         <br>
 
-        <!-- <div class="container-fluid p-4" style='background-color:#66ffb3'> -->
-            <div class="container-fluid p-4" style='background-color:lightgoldenrodyellow;'>
-            <div class="row mb-3 gx-1">
-                <span class="col-11">
-                    <form action="" class="row">
-                        <span class='col-sm-2'>
-                            <input type="text" readonly class='form-control-plaintext dummy-form-title' value="Room Number">
-                        </span>
-                        <span class='col-sm-2'>
-                            <input type="text" readonly class='form-control-plaintext dummy-form-title' value="Period">
-                        </span>
-                        <span class='col-sm-2'>
-                            <input type="text" readonly class='form-control-plaintext dummy-form-title' value="Day">
-                        </span>
-                        <span class='col-sm-2'>
-                            <input type="text" readonly class='form-control-plaintext dummy-form-title' value="Section">
-                        </span>
-                        <span class='col-sm-2'>
-                            <input type="text" readonly class='form-control-plaintext dummy-form-title' value="Subject Code">
-                        </span>
-                    </form>
-                </span>
-                <!-- dummy code as placeholder -->
-                <span class="col-1"></span>
-            </div>
-
-            <?php foreach ($result as $row) : ?>
-                <div class='row mb-3 gx-1'>
-                    <span class='col-11'>
-                        <form action="/UniCS/public/admin/editschedule" method="post" class='row'>
-                            <?= $postFilter ?>
-                            <input type="hidden" name="schedule[id]" value=<?= $row->id ?>>
-                            <span class='col-sm-2'>
-                                <input type="number" name="schedule[roomNo]" id="" class='form-control' value=<?= $row->roomNo ?>>
-                            </span>
-                            <span class='col-sm-2'>
-                                <input type="number" name="schedule[period]" id="" class='form-control' value=<?= $row->period ?>>
-                            </span>
-                            <span class='col-sm-2'>
-                                <input type="text" name="schedule[day]" id="" class='form-control' value=<?= $row->day ?>>
-                            </span>
-                            <span class='col-sm-2'>
-                                <input type="text" name="schedule[section]" id="" class='form-control' value=<?= $row->section ?>>
-                            </span>
-                            <span class='col-sm-2'>
-                                <input type="number" name="schedule[subjectCode]" id="" class='form-control' value=<?= $row->subjectCode ?>>
-                            </span>
-                           
-                        </form>
-                    </span>
-
-                   
-                </div>
-
-
-            <?php endforeach; ?>
-        </div>
-
-
-        <!-- <hr> -->
-       
+        <table class='table table-hover table-light table-bordered' style='text-align:center;'>
+            <thead>
+                <tr class='table-dark'>
+                    <th class='th-top-left-dark'>Room Number</th>
+                    <th class='th-rl-light'>Period</th>
+                    <th class='th-rl-light'>Day</th>
+                    <th class='th-rl-light'>Section</th>
+                    <th class='th-top-right-dark'>Subject Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($result as $row) : ?>
+                    <tr class='border-dark'>
+                        <td><?= $row->roomNo ?></td>
+                        <td><?= $row->period ?></td>
+                        <td><?= ucfirst($row->day) ?></td>
+                        <td><?= ucfirst($row->section) ?></td>
+                        <td><?= $row->subjectCode ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
-
 </div>

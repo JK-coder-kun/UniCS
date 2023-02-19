@@ -34,7 +34,7 @@ class Request{
             $roomNo=$_GET['roomNo'];
             $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
                     $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
-                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'wednesday','schedule');
                     $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
                     $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
                     $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));
@@ -82,7 +82,7 @@ class Request{
                     $roomNo=$requestForm['roomNo'];
                     $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
                     $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
-                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'wednesday','schedule');
                     $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
                     $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
                     $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));
@@ -125,7 +125,7 @@ class Request{
             $roomNo=$requestForm['roomNo'];
             $roomSchedules['monday']=$this->scheduleTable->findRoomSchedule($roomNo,'monday','schedule');//return arrays
                     $roomSchedules['tuesday']=$this->scheduleTable->findRoomSchedule($roomNo,'tuesday','schedule');
-                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'webnesday','schedule');
+                    $roomSchedules['wednesday']=$this->scheduleTable->findRoomSchedule($roomNo,'wednesday','schedule');
                     $roomSchedules['thursday']=$this->scheduleTable->findRoomSchedule($roomNo,'thursday','schedule');
                     $roomSchedules['friday']=$this->scheduleTable->findRoomSchedule($roomNo,'friday','schedule');
                     $roomSchedules['monday']=array_merge($roomSchedules['monday'], $this->approvalTable->findRoomSchedule($roomNo,'monday','schedule'));

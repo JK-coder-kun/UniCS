@@ -34,7 +34,7 @@ $periods = [0, "8:30 - 9:30", "9:40 - 10:40", "10:50 - 11:50", "12:40 - 1:40", "
         <div class="carousel-inner">
 
             <div class='carousel-item active' style='width:100%;text-align:center'>
-                <span style='text-align:center;display:block;'>Building 2</span>
+                <span style='display:block;text-align:center;'>Building 2</span>
                 <?php
                 for ($i = 0; $i < 5; $i++) {
                     for ($j = 0; $j < 6; $j++) {
@@ -44,7 +44,7 @@ $periods = [0, "8:30 - 9:30", "9:40 - 10:40", "10:50 - 11:50", "12:40 - 1:40", "
                         if (array_key_exists($roomNo, $rooms) && $rooms[$roomNo]) {
                             echo "<a href='/UniCS/public/room?roomNo=" . $roomNo . "' class='btn btn-primary btn-lg room room-taken' role='button'>" . $roomNo. "</a>";
                         }  else if(array_key_exists($roomNo, $rooms)){
-                            echo "<a href='/UniCS/public/room?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-primary btn-lg room room-free' role='button'>" . $roomNo. "</a>";
+                            echo "<a href='/UniCS/public/room?roomNo=" . $roomNo . "&period=" . $period . "&day=" . $day . "' class='btn btn-light btn-lg room room-free' role='button'>" . $roomNo. "</a>";
                         }else{
                             echo "<a href='#' class='btn btn-primary btn-lg room room-denied' role='button'>" . $roomNo. "</a>";
                         }

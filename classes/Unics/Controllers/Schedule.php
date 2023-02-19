@@ -52,6 +52,11 @@ class Schedule{
         $rooms['213']=false;
         $rooms['214']=false;
         $rooms['215']=false;
+
+        $rooms['244']=false;
+        $rooms['245']=false;
+        $rooms['352']=false;
+        $rooms['353']=false;
         
         for($building=2;$building<=3;$building++){
             for($floor=2;$floor<=3;$floor++){

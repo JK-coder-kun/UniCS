@@ -44,7 +44,7 @@
 					<select name="user[permissions]" class='form-select' id="">
 						<option value="0">Normal User</option>
 						<option value="1">Priviledged User</option>
-						<option value="7">admin</option>
+						<option value="7">Admin</option>
 					</select>
 				</span>
 			</div>

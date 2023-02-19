@@ -1,6 +1,6 @@
 # Update for 18th Feb 2023
 
-### Update files
+### Updated files
 * userlist.html.php
 * showschedule.html.php
 * searchschedule.html.php

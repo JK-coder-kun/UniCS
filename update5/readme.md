@@ -2,3 +2,4 @@
 
 ### Updated Files
 * layout.html.php
+* login.html.php

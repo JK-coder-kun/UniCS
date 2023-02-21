@@ -9,6 +9,11 @@
 
     <link rel="stylesheet" href="/UniCS/templates/bootstrap.css">
     <link rel="stylesheet" href="/UniCS/templates/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
     <title><?= $title ?></title>
     <style>
         input::-webkit-outer-spin-button,
@@ -127,6 +132,24 @@
         .th-rl-light {
             border-color: #212529 #f8f9fa #212529 #f8f9fa;
         }
+
+        .nav-link-white {
+            color: white;
+        }
+
+        .nav-link-white:hover {
+            /* color:#01337e; */
+            /* color:#33ff99; */
+            color: #4dffa6;
+        }
+
+        .bg-future {
+            background-color: #0367fc;
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
     </style>
     <script>
         function changeStatus(id, userid) {
@@ -166,24 +189,24 @@ function notiCount($notifications)
 
 <body>
     <div id="demo"></div>
-    <nav class="navbar bg-primary navbar-dark navbar-expand-md sticky-top">
+    <nav class="navbar bg-future navbar-dark navbar-expand-md sticky-top">
         <div class="container-fluid">
-            <a href="#" class="navbar-brand" id="navbar-brand">U<span style="color:#FF6A00;">ni</span>CS</a>
+            <a href="/UniCS/public/schedule" class="navbar-brand nav-link-white" id="navbar-brand"><span style='font-size:30px; font-weight:bolder;'>UniCS</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav" id="navbar-ul">
                     <li class="nav-item">
-                        <a href="/UniCS/public/schedule" class="nav-link">Home</a>
+                        <a href="/UniCS/public/schedule" class="nav-link nav-link-white">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/UniCS/public/profile" class="nav-link">Profile</a>
+                        <a href="/UniCS/public/profile" class="nav-link nav-link-white">Profile</a>
                     </li>
 
                     <?php if ($loggedIn->permissions >= 4) : ?>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Admin</a>
+                            <a href="#" class="nav-link nav-link-white dropdown-toggle" role="button" data-bs-toggle="dropdown">Admin</a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="/UniCS/public/admin/listschedule" class="dropdown-item">Edit Schedule</a>
@@ -202,17 +225,17 @@ function notiCount($notifications)
                         </li>
                     <?php else : ?>
                         <li class="nav-item dropdown">
-                            <a href="/UniCS/public/searchschedule" class="nav-link " role="button">Search Schedule</a>
+                            <a href="/UniCS/public/searchschedule" class="nav-link nav-link-white" role="button">Search Schedule</a>
                         </li>
                     <?php endif; ?>
 
                     <li class="nav-item mt-2">
-                        <a class="" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <a class="nav-link-white" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
                             <!-- bell color changed -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
                             </svg>
-                            <span id="redBellThing" class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger <?php echo notiCount($notifications)==0 ? 'visually-hidden' : ''; ?>">
+                            <span id="redBellThing" class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger <?php echo notiCount($notifications) == 0 ? 'visually-hidden' : ''; ?>">
                                 <span id="totalUnread">
                                     <?php echo $totalUnread; ?>
                                 </span>
@@ -224,9 +247,9 @@ function notiCount($notifications)
 
                     <li class="nav-item">
                         <?php if ($loggedIn) : ?>
-                            <a href="/UniCS/public/logout" class="nav-link">Logout</a>
+                            <a href="/UniCS/public/logout" class="nav-link nav-link-white">Logout</a>
                         <?php else : ?>
-                            <a href="/UniCS/public/login" class="nav-link">Login</a>
+                            <a href="/UniCS/public/login" class="nav-link nav-link-white">Login</a>
                         <?php endif; ?>
                     </li>
                 </ul>
@@ -274,7 +297,7 @@ function notiCount($notifications)
             <div class="card-footer text-muted">
                 made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                </svg> by <span style='color:red'>UniCS</span> team
+                </svg> by <span style='color:red'>uniCS</span> team
             </div>
         </div>
         <!-- </footer> -->

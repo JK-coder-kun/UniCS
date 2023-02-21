@@ -57,7 +57,7 @@ class Routes{
                     'action'=>'error'
                 ]
                 ],
-            'login/permissionserror'=>[
+            'permissionserror'=>[
                 'GET'=>[
                     'controller'=>$loginController,
                     'action'=>'permissionsError'

@@ -123,9 +123,9 @@ class Register
 	{
 		if (isset($_GET['search']) && $_GET['search'] != '') {
 			$search = $_GET['search'];
-			$users = $this->userTable->findMultiColumn(['email' => $search], 'name,permissions DESC');
+			$users = $this->userTable->findMultiColumn(['email' => $search], 'name,permissions DESC,role DESC');
 		} else {
-			$users = $this->userTable->findAll();
+			$users = $this->userTable->findAll('permissions DESC,role DESC,name');
 		}
 
 

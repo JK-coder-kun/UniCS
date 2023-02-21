@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 <?php
-                if (isset($error)) echo "<p style=\"color:'red';\">" . $error . "</p></br>";
+                if (isset($error)) echo "<p style=\"color:red;\">" . $error . "</p></br>";
 
                 foreach ($roomSchedules as $key => $values) {
 
@@ -57,60 +57,75 @@
             </tbody>
         </table>
     </div>
-    <div class='container' style="display:<?= ($user->permissions >= 1 && $roomNo!='244' && $roomNo!='245' && $roomNo!='353' && $roomNo!='352') ? '' : 'none;' ?>">
-        <form action="request" method="post">
-            <fieldset>
-                <legend>Request Room</legend>
-                <input type="hidden" name="request[roomNo]" value=<?= $roomNo ?>>
-                <div class="row mb-2">
-                    <label class='col-1 col-form-label' for="request[period]">Period</label>
-                    <span class="col-auto">
-                        <!-- <input class='form-control' type="number" name="request[period]" id="request" value=<?= $period ?> require> -->
-                        <select class='form-select' name='request[period]'>
-                            <option value="1" <?=($period=='1')?'selected':''?>>1</option>
-                            <option value="2" <?=($period=='2')?'selected':''?>>2</option>
-                            <option value="3" <?=($period=='3')?'selected':''?>>3</option>
-                            <option value="4" <?=($period=='4')?'selected':''?>>4</option>
-                            <option value="5" <?=($period=='5')?'selected':''?>>5</option>
-                            <option value="6" <?=($period=='6')?'selected':''?>>6</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="row mb-2">
-                    <label class='col-1 col-form-label' for="request[day]">Day</label>
-                    <span class="col-auto">
-                        <!-- <input class='form-control' type="text" name="request[day]" id="request" value="<?= $day ?>" require> -->
-                        <select class='form-select' name="request[day]">
-                            <option value="monday" <?=($day=='monday')?'selected':''?>>Monday</option>
-                            <option value="tuesday" <?=($day=='tuesday')?'selected':''?>>Tuesday</option>
-                            <option value="wednesday" <?=($day=='wednesday')?'selected':''?>>Wednesday</option>
-                            <option value="thursday" <?=($day=='thursday')?'selected':''?>>Thursday</option>
-                            <option value="friday" <?=($day=='friday')?'selected':''?>>Friday</option>
-                        </select>
-                    </span>
+    <?php if ($user->permissions >= 1) : ?>
+        <?php if ($roomNo != '244' && $roomNo != '245' && $roomNo != '353' && $roomNo != '352') : ?>
+            <div class='container'>
+                <form action="request" method="post">
+                    <fieldset>
+                        <legend>Request Room</legend>
+                        <input type="hidden" name="request[roomNo]" value=<?= $roomNo ?>>
+                        <div class="row mb-2">
+                            <label class='col-1 col-form-label' for="request[period]">Period</label>
+                            <span class="col-auto">
+                                <!-- <input class='form-control' type="number" name="request[period]" id="request" value=<?= $period ?> require> -->
+                                <select class='form-select' name='request[period]'>
+                                    <option value="1" <?= ($period == '1') ? 'selected' : '' ?>>1</option>
+                                    <option value="2" <?= ($period == '2') ? 'selected' : '' ?>>2</option>
+                                    <option value="3" <?= ($period == '3') ? 'selected' : '' ?>>3</option>
+                                    <option value="4" <?= ($period == '4') ? 'selected' : '' ?>>4</option>
+                                    <option value="5" <?= ($period == '5') ? 'selected' : '' ?>>5</option>
+                                    <option value="6" <?= ($period == '6') ? 'selected' : '' ?>>6</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class='col-1 col-form-label' for="request[day]">Day</label>
+                            <span class="col-auto">
+                                <!-- <input class='form-control' type="text" name="request[day]" id="request" value="<?= $day ?>" require> -->
+                                <select class='form-select' name="request[day]">
+                                    <option value="monday" <?= ($day == 'monday') ? 'selected' : '' ?>>Monday</option>
+                                    <option value="tuesday" <?= ($day == 'tuesday') ? 'selected' : '' ?>>Tuesday</option>
+                                    <option value="wednesday" <?= ($day == 'wednesday') ? 'selected' : '' ?>>Wednesday</option>
+                                    <option value="thursday" <?= ($day == 'thursday') ? 'selected' : '' ?>>Thursday</option>
+                                    <option value="friday" <?= ($day == 'friday') ? 'selected' : '' ?>>Friday</option>
+                                </select>
+                            </span>
 
-                </div>
-                <div class="row mb-3">
-                    <label class='col-1 col-form-label' for="request[reason]">Reason</label>
-                    <span class="col-auto">
-                        <select class="form-select" name="request[reason]">
-                            <?php foreach ($priority as $reason) : ?>
-                                <option value="<?= $reason->reason ?>"><?= ucfirst($reason->reason) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </span>
+                        </div>
+                        <div class="row mb-3">
+                            <label class='col-1 col-form-label' for="request[reason]">Reason</label>
+                            <span class="col-auto">
+                                <select class="form-select" name="request[reason]">
+                                    <?php foreach ($priority as $reason) : ?>
+                                        <option value="<?= $reason->reason ?>"><?= ucfirst($reason->reason) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </span>
 
-                </div>
-                <div class="row mb-2">
-                    <span class='col-auto'>
-                        <input class='btn btn-primary' type="submit" value="Send Request">
-                    </span>
-                </div>
+                        </div>
+                        <div class="row mb-2">
+                            <span class='col-auto'>
+                                <input class='btn btn-primary' type="submit" value="Send Request">
+                            </span>
+                        </div>
 
-            </fieldset>
+                    </fieldset>
 
-        </form>
-    </div>
+                </form>
+            </div>
+        <?php else : ?>
+            <div class="container">
+            <h3>You can't request Department or Lab rooms</h3>
+
+            </div>
+        <?php endif ?>
+    <?php else : ?>
+        <div class="container">
+        <h4>Normal users don't have access to request rooms</h4>
+
+        </div>
+    <?php endif; ?>
+    
 
 
 </div>

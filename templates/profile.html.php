@@ -1,7 +1,7 @@
 <div class='container-fluid mt-3 mb-3 p-3'>
     <h4>Profile</h4>
     <hr>
-    <div style='width:40%'>
+    <div style='width:40%;'>
         <div class="input-group row m-2">
             <span class="input-group-text input-group-text-dark col-sm-4">User ID</span>
             <input type="text" readonly disabled class="form-control dummy-form-input-group col-sm-auto" value="<?= $userInfo['id'] ?>">

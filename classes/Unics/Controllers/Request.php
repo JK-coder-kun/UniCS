@@ -113,7 +113,7 @@ class Request{
                         'day'=>$requestForm['day'],'roomNo'=>$requestForm['roomNo'],
                         'date'=>$date,'reason'=>$requestForm['reason'],
                         'userId'=>$userid]); 
-                $notiText='Your request have been sent!</br>RoomNo:'.$requestForm['roomNo'].', '.$requestForm['day'].', period'.$requestForm['period'].'</br>Tomorrow, you will receive checking result';
+                $notiText='Your request have been sent!</br>RoomNo:'.$requestForm['roomNo'].', '.$requestForm['day'].', Period '.$requestForm['period'].',Reason '.$requestForm['reason'].'</br>Tomorrow, you will receive checking result';
                 $this->notificationTable->save([
                     'notiText'=>$notiText,
                     'time'=>$date,'userid'=>$userid,'status'=>1

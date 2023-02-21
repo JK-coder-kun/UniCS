@@ -14,7 +14,7 @@
         <!-- main -->
         <div class='container justify-content-center d-flex align-items-center'>
             <div class="bg-light-subtle p-5 col-md-6 container rounded-4">
-                <h1 class='' style='text-align:center'>uniCS</h1>
+                <h1 class='' style='text-align:center'>UniCS</h1>
                 <form action='/UniCS/public/login'method=post>
                     <div class='form-group form-floating mb-3'>
                         <input type='email' name="email" class='form-control' id='email' placeholder='Email address' />

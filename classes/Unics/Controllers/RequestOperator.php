@@ -169,7 +169,7 @@ class RequestOperator
         foreach ($priorityObjs as $priorityObj) {
             $priority[$priorityObj->reason] = $priorityObj->priority;
         }
-        print_r($priority);
+        //print_r($priority);
         //$highestPriority=sizeof($priority);
         $chosenReq = $requests[0];
         foreach ($requests as $request) {

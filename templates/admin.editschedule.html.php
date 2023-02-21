@@ -124,19 +124,19 @@ if ($filter) {
                             <?= $postFilter ?>
                             <input type="hidden" name="schedule[id]" value=<?= $row->id ?>>
                             <span class='col-sm-2'>
-                                <input type="number" name="schedule[roomNo]" id="" class='form-control' value=<?= $row->roomNo ?> required>
+                                <input type="number" name="schedule[roomNo]" id="" class='form-control' value="<?= $row->roomNo ?>" required>
                             </span>
                             <span class='col-sm-2'>
-                                <input type="number" name="schedule[period]" id="" class='form-control' value=<?= $row->period ?> required>
+                                <input type="number" name="schedule[period]" id="" class='form-control' value="<?= $row->period ?>" required>
                             </span>
                             <span class='col-sm-2'>
-                                <input type="text" name="schedule[day]" id="" class='form-control' value=<?= $row->day ?> required>
+                                <input type="text" name="schedule[day]" id="" class='form-control' value="<?= $row->day ?>" required>
                             </span>
                             <span class='col-sm-2'>
-                                <input type="text" name="schedule[section]" id="" class='form-control' value=<?= $row->section ?> required>
+                                <input type="text" name="schedule[section]" id="" class='form-control' value="<?= $row->section ?>" required>
                             </span>
                             <span class='col-sm-2'>
-                                <input type="text" name="schedule[subjectCode]" id="" class='form-control' value=<?= $row->subjectCode ?> required>
+                                <input type="text" name="schedule[subjectCode]" id="" class='form-control' value="<?= $row->subjectCode ?>" required>
                             </span>
                             <span class='col-sm-2'>
                                 <input type="submit" class='form-control btn btn-primary' style='border:0' value="Edit">
@@ -164,11 +164,11 @@ if ($filter) {
         <form action="/UniCS/public/admin/addschedule" method="post" class='row g-2 justify-content-center'>
             <?= $postFilter ?>
             <span class='col-sm-2'>
-                <input type="number" name="schedule[roomNo]" id="" class='form-control' placeholder='Room Number' value=<?= $filter['roomNo'] ?? '' ?> required>
+                <input type="number" name="schedule[roomNo]" id="" class='form-control' placeholder='Room Number' value="<?= $filter['roomNo'] ?? ''?>" required>
             </span>
             <span class='col-sm-2'>
                 <select class='form-select' name='schedule[period]' required>
-                    <option selected disabled>Period</option>
+                    <!-- <option selected disabled>Period</option> -->
                     <option name='filter[period]' value="1" <?= ($filter['period'] == '1') ? 'selected' : '' ?>>1</option>
                     <option name='filter[period]' value="2" <?= ($filter['period'] == '2') ? 'selected' : '' ?>>2</option>
                     <option name='filter[period]' value="3" <?= ($filter['period'] == '3') ? 'selected' : '' ?>>3</option>
@@ -179,7 +179,7 @@ if ($filter) {
             </span>
             <span class='col-sm-2'>
                 <select name="schedule[day]" class="form-select" required>
-                    <option selected disabled>Day</option>
+                    <!-- <option selected disabled>Day</option> -->
                     <option value="monday" <?= ($filter['day'] == 'monday') ? 'selected' : '' ?>>Monday</option>
                     <option value="tuesday" <?= ($filter['day'] == 'tuesday') ? 'selected' : '' ?>>Tuesday</option>
                     <option value="wednesday" <?= ($filter['day'] == 'wednesday') ? 'selected' : '' ?>>Wednesday</option>
@@ -189,7 +189,7 @@ if ($filter) {
             </span>
             <span class='col-sm-2'>
                 <select name="schedule[section]" class="form-select" required>
-                    <option selected disabled>Section</option>
+                    <!-- <option selected disabled>Section</option> -->
                     <option value="a" <?= ($filter['section'] == 'a') ? 'selected' : '' ?>>A</option>
                     <option value="b" <?= ($filter['section'] == 'b') ? 'selected' : '' ?>>B</option>
                     <option value="c" <?= ($filter['section'] == 'c') ? 'selected' : '' ?>>C</option>
@@ -200,7 +200,7 @@ if ($filter) {
                 </select>
             </span>
             <span class='col-sm-2'>
-                <input type="number" name="schedule[subjectCode]" id="" class='form-control' placeholder='Subject Code' value=<?= $filter['subjectCode'] ?? '' ?> required>
+                <input type="text" name="schedule[subjectCode]" id="" class='form-control' placeholder='Subject Code' value="<?= $filter['subjectCode'] ?? ''?>" required>
             </span>
             <span class='col-sm-auto'>
                 <input class='btn btn-primary' type="submit" value="Add">
